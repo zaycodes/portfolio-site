@@ -1,0 +1,763 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import CtaLeadBlock from '../components/CtaLeadBlock.astro';
+import Newsletter from '../components/Newsletter.astro';
+import Footer from '../components/Footer.astro';
+
+const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
+
+const services = [
+  { id: 'api-docs', filter: 'api', icon: '< >', title: 'API Documentation', desc: 'REST API references, OpenAPI spec documentation, authentication guides, migration content, and changelog management. End-to-end ownership from first draft to shipped product.', deliverables: ['API reference documentation', 'Getting started guides', 'Authentication & security docs', 'Migration guides', 'Developer portal content', 'OpenAPI spec reviews'] },
+  { id: 'product-docs', filter: 'product', icon: '[ ]', title: 'Product Documentation', desc: 'User guides, onboarding content, feature documentation, and release notes for SaaS, cloud, and developer platforms.', deliverables: ['User guides & tutorials', 'Feature documentation', 'Onboarding content', 'Release notes', 'Knowledge base articles', 'Admin & configuration guides'] },
+  { id: 'ux-writing', filter: 'ux', icon: 'Aa', title: 'UX Writing', desc: 'Interface copy, microcopy, error messages, onboarding flows, and naming conventions. Content design that reduces user friction and improves product clarity.', deliverables: ['UI text & microcopy', 'Error messages & empty states', 'Onboarding flows', 'Naming conventions', 'Content audits', 'Style guide development'] },
+  { id: 'doc-ops', filter: 'ops', icon: '//', title: 'Documentation Operations', desc: 'Documentation infrastructure, CI/CD pipelines, linting automation, and docs-as-code implementation. Build systems that scale with your team.', deliverables: ['Docs-as-code setup (Hugo, Docusaurus)', 'GitHub Actions CI/CD pipelines', 'Vale linting integration', 'AI-assisted authoring workflows', 'Documentation site deployment', 'Process design & knowledge transfer'] },
+  { id: 'consulting', filter: 'all', icon: '{ }', title: 'Documentation Strategy & Consulting', desc: 'Strategic documentation audits, content strategy, information architecture reviews, and team enablement.', deliverables: ['Documentation audits', 'Information architecture', 'Content strategy', 'Style guide creation', 'Team training & workshops', 'Documentation roadmaps'] },
+];
+
+const differentiators = [
+  { title: 'I was an engineer before I was a technical writer.', desc: 'Before I documented code, I wrote it. That means I can work directly with engineers, understand the code, and ask better questions before I write.' },
+  { title: 'You deal with one person. All in.', desc: "From the first conversation to the final delivery, you get direct access to an experienced technical writer who understands your product, your users, and your team. No sharing context between people. No losing details along the way." },
+  { title: 'The system outlasts the engagement.', desc: 'I build CI/CD pipelines, linting rules, and AI review workflows into the documentation process. When I leave, the infrastructure remains.' },
+  { title: "I've done this at real scale.", desc: "300+ API endpoints. 20+ product areas. Sole writer at a fast-moving team. I've seen the problems that come with documentation at scale and know how to work through them." },
+];
+---
+
+<BaseLayout title="Work With Me — Zainab Daodu" description="API documentation, product docs, UX writing, documentation operations, and consulting. Available for contracts and consulting.">
+  <Nav />
+
+  <header class="page-header">
+    <img src="/images/zainab-speaking.JPG" alt="" class="header-bg-img" loading="eager" aria-hidden="true" />
+    <div class="header-overlay" aria-hidden="true"></div>
+    <div class="container header-body">
+      <p class="page-eyebrow">Work With Me</p>
+      <h1 class="page-title">What I Do</h1>
+      <p class="page-desc">Available for contracts and consulting across the full documentation stack. From API documentation, product docs, and UX writing, to documentation operations and the workflows that keep them sustainable.</p>
+    </div>
+  </header>
+
+  <main class="services-main">
+
+    <!-- ── Where are you right now? ── -->
+    <section class="routing-section" aria-labelledby="routing-heading">
+      <span class="deco deco-ring-lg" aria-hidden="true"></span>
+      <span class="deco deco-diamond" aria-hidden="true"></span>
+      <div class="routing-inner">
+
+        <div class="routing-head scroll-fade">
+          <p class="section-eyebrow" id="routing-heading">Where are you right now?</p>
+          <h2 class="routing-headline">Every engagement starts differently.<br />Find where you fit.</h2>
+        </div>
+
+        <div class="routing-grid">
+
+          <div class="routing-card scroll-fade">
+            <span class="rc-num" aria-hidden="true">01</span>
+            <h3 class="rc-title">Your documentation should answer questions before they reach your team.</h3>
+            <p class="rc-desc">Instead, users still rely on your team for answers that should already be documented. The knowledge exists, but it is stuck inside the people who built the product.</p>
+            <span class="rc-tag">Let's turn that knowledge into documentation your users can rely on.</span>
+            <a href={BOOK_A_CALL_URL} class="rc-cta" target="_blank" rel="noopener noreferrer">Start a conversation →</a>
+          </div>
+
+          <div class="routing-arrow" aria-hidden="true">
+            <svg width="28" height="18" viewBox="0 0 28 18" fill="none">
+              <path d="M0 9 H22 M14 2 L22 9 L14 16" stroke="rgba(132,12,214,0.45)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <div class="routing-card scroll-fade">
+            <span class="rc-num" aria-hidden="true">02</span>
+            <h3 class="rc-title">You have writers. You don't have a system.</h3>
+            <p class="rc-desc">Everyone is documenting, but everyone is doing it differently. There is no shared style guide, no reliable workflow, and no clear owner when things fall behind.</p>
+            <span class="rc-tag">Let's build the system behind your documentation.</span>
+            <a href={BOOK_A_CALL_URL} class="rc-cta" target="_blank" rel="noopener noreferrer">Book a documentation strategy session →</a>
+          </div>
+
+          <div class="routing-arrow" aria-hidden="true">
+            <svg width="28" height="18" viewBox="0 0 28 18" fill="none">
+              <path d="M0 9 H22 M14 2 L22 9 L14 16" stroke="rgba(132,12,214,0.45)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <div class="routing-card scroll-fade">
+            <span class="rc-num" aria-hidden="true">03</span>
+            <h3 class="rc-title">You're a technical writer figuring out what's next.</h3>
+            <p class="rc-desc">Maybe you've gotten your first role, you're trying to get started with API documentation, or you're looking for your place in open source. I'll help you make sense of the path with lessons from my own journey.</p>
+            <span class="rc-tag">Get guidance from someone who's been there.</span>
+            <a href={BOOK_A_CALL_URL} class="rc-cta" target="_blank" rel="noopener noreferrer">Apply for mentorship →</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Services grid ── -->
+    <section class="services-section" aria-labelledby="services-heading">
+      <div class="services-inner">
+        <div class="services-head scroll-fade">
+          <p class="section-eyebrow">Services</p>
+          <h2 id="services-heading" class="services-headline">The full documentation stack — end to end.</h2>
+        </div>
+        <div class="services-grid">
+          {services.map(service => (
+            <article class="service-card scroll-fade" id={service.id}>
+              <div class="service-icon" aria-hidden="true">{service.icon}</div>
+              <h3 class="service-title">{service.title}</h3>
+              <p class="service-desc">{service.desc}</p>
+              <ul class="service-deliverables" role="list">
+                {service.deliverables.map(d => <li>{d}</li>)}
+              </ul>
+              <a href={`/work?filter=${service.filter}`} class="service-samples-link">
+                View samples →
+              </a>
+            </article>
+          ))}
+        </div>
+
+        <div class="services-cta scroll-fade">
+          <p class="services-cta-text">Looking for a specific type of documentation work?</p>
+          <a href={BOOK_A_CALL_URL} class="btn-primary btn-cta services-cta-btn" target="_blank" rel="noopener noreferrer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Book a Discovery Call
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── How I Work — process ── -->
+    <section class="process-section" aria-labelledby="process-heading">
+      <div class="process-inner">
+
+        <div class="process-head scroll-fade">
+          <p class="section-eyebrow" id="process-heading">How I Work</p>
+          <h2 class="process-headline">I approach documentation like an engineer.</h2>
+          <p class="process-sub">Before writing anything, I understand the system behind the product by looking through the codebase, support conversations, and product history. By the time I write the first sentence, I already know where the gaps are.</p>
+        </div>
+
+        <div class="process-flow">
+
+          <div class="process-step scroll-fade">
+            <div class="ps-bg-num" aria-hidden="true">01</div>
+            <div class="ps-body">
+              <span class="ps-step-label">Step 01</span>
+              <h3 class="ps-title">Discovery</h3>
+              <p class="ps-desc">I look at what you have, what is missing, and where users or teams are running into problems. Before writing anything, I build a clear picture of your documentation gaps and what needs to change.</p>
+              <span class="ps-outcome">↳ Documented gap analysis</span>
+            </div>
+          </div>
+
+          <div class="process-connector" aria-hidden="true">
+            <svg width="36" height="22" viewBox="0 0 36 22" fill="none">
+              <path d="M0 11 H29 M20 3 L29 11 L20 19" stroke="rgba(132,12,214,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="pc-label">then</span>
+          </div>
+
+          <div class="process-step scroll-fade">
+            <div class="ps-bg-num" aria-hidden="true">02</div>
+            <div class="ps-body">
+              <span class="ps-step-label">Step 02</span>
+              <h3 class="ps-title">System Design</h3>
+              <p class="ps-desc">Writing is only part of the job. I design the structure, tooling, style decisions, and workflows that make documentation easier to maintain long after the project ends.</p>
+              <span class="ps-outcome">↳ Architecture that scales</span>
+            </div>
+          </div>
+
+          <div class="process-connector" aria-hidden="true">
+            <svg width="36" height="22" viewBox="0 0 36 22" fill="none">
+              <path d="M0 11 H29 M20 3 L29 11 L20 19" stroke="rgba(132,12,214,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="pc-label">then</span>
+          </div>
+
+          <div class="process-step scroll-fade">
+            <div class="ps-bg-num" aria-hidden="true">03</div>
+            <div class="ps-body">
+              <span class="ps-step-label">Step 03</span>
+              <h3 class="ps-title">Build & Hand Off</h3>
+              <p class="ps-desc">This is where everything comes together. I write the documentation, build the workflows that keep it accurate, and make sure your team leaves with something they can confidently own. The engagement ends. The system doesn't.</p>
+              <span class="ps-outcome">↳ Docs + the system that keeps them accurate</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Why not an agency? — differentiators ── -->
+    <section class="diff-section" aria-labelledby="diff-heading">
+      <div class="diff-inner">
+
+        <div class="diff-left scroll-fade">
+          <p class="section-eyebrow">Why not just hire an agency?</p>
+          <h2 class="diff-headline" id="diff-heading">Most people who ask this question already know the answer.</h2>
+          <p class="diff-sub">Agencies are built for volume. This engagement is built around your specific problem.</p>
+          <a href={BOOK_A_CALL_URL} class="btn-primary diff-cta" target="_blank" rel="noopener noreferrer">Book a discovery call</a>
+        </div>
+
+        <div class="diff-right">
+          {differentiators.map((item, i) => (
+            <div class="diff-item scroll-fade">
+              <span class="di-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div class="di-body">
+                <h3 class="di-title">{item.title}</h3>
+                <p class="di-desc">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── How to engage ── -->
+    <section class="engagement-section" aria-labelledby="engagement-heading">
+      <span class="deco deco-diamond" aria-hidden="true"></span>
+      <div class="engagement-inner">
+        <p class="section-eyebrow" id="engagement-heading">Engagement Models</p>
+        <h2 class="engagement-headline">Pick the model that fits your situation.</h2>
+        <div class="engagement-grid">
+          <div class="engagement-item scroll-fade">
+            <span class="em-icon" aria-hidden="true">{ }</span>
+            <h3 class="engagement-title">Contract</h3>
+            <p class="engagement-desc">Fixed-term engagement for a project, product launch, or backfill need. You get full ownership and a defined scope with clear deliverables.</p>
+          </div>
+          <div class="engagement-item scroll-fade">
+            <span class="em-icon" aria-hidden="true">[ ]</span>
+            <h3 class="engagement-title">Consulting</h3>
+            <p class="engagement-desc">For teams that need senior documentation expertise without a full-time hire, I help with documentation audits and content strategy to ongoing documentation leadership.</p>
+          </div>
+          <div class="engagement-item scroll-fade">
+            <span class="em-icon" aria-hidden="true">( )</span>
+            <h3 class="engagement-title">Mentorship</h3>
+            <p class="engagement-desc">One-to-one career clarity sessions for technical writers at any stage. From breaking into the field to levelling up into more technical niches.</p>
+          </div>
+          <div class="engagement-item scroll-fade">
+            <span class="em-icon" aria-hidden="true">&lt; &gt;</span>
+            <h3 class="engagement-title">Speaking</h3>
+            <p class="engagement-desc">Conference talks, workshops, and community events on documentation, developer experience, and the intersection of technical writing and engineering.</p>
+          </div>
+        </div>
+        <div class="engagement-cta scroll-fade">
+          <a href={BOOK_A_CALL_URL} class="btn-primary btn-cta" target="_blank" rel="noopener noreferrer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Book a Call
+          </a>
+          <a href="/work" class="engagement-ghost">See my work first →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <CtaLeadBlock />
+  <Newsletter />
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ── Shared ── */
+  .section-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-purple);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+  }
+
+  /* ── Page header ── */
+  .page-header {
+    position: relative; overflow: hidden;
+    min-height: 220px;
+    display: flex; align-items: flex-end;
+    border-bottom: 1px solid var(--purple-22);
+  }
+  .header-bg-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 40%;
+    display: block;
+    transform: scaleX(-1);
+  }
+  .header-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.72) 50%, rgba(0,0,0,0.4) 100%);
+  }
+  /* Headline text over this photo flips to dark ink in light mode, so the
+     dark scrim flips to a light wash (tinted to the page background)
+     instead of staying a dark island under light text expectations. */
+  :global(html[data-theme="light"]) .header-overlay {
+    background: linear-gradient(to top, rgba(242,238,248,0.94) 0%, rgba(242,238,248,0.75) 50%, rgba(242,238,248,0.35) 100%);
+  }
+  .header-body { position: relative; z-index: 1; padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  .page-eyebrow { font-family: var(--font-mono); font-size: 12px; color: var(--color-purple); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .page-title { font-size: clamp(36px, 6vw, 58px); font-weight: 800; color: var(--color-white); letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 0.85rem; }
+  .page-desc { color: var(--white-55); font-size: 18px; line-height: 1.75; max-width: 520px; }
+
+  /* ── Main ── */
+  .services-main { background: transparent; }
+
+  /* ══════════════════════════════════════
+     WHERE ARE YOU RIGHT NOW — routing
+  ══════════════════════════════════════ */
+  .routing-section {
+    padding: 5rem 1.75rem;
+    border-bottom: 1px solid var(--white-08);
+    background: var(--color-black);
+    position: relative;
+    overflow: hidden;
+  }
+  .routing-inner { max-width: 1140px; margin: 0 auto; position: relative; z-index: 1; }
+
+  /* ── Decorative shapes — same vocabulary as StatsTicker, gives each black
+     section a distinct, clearly visible identity instead of a colour shift ── */
+  .deco { position: absolute; pointer-events: none; }
+  .deco-ring-lg {
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    border: 1px solid rgba(132,12,214,0.22);
+    top: -90px; right: 4%;
+  }
+  .deco-ring-lg::after {
+    content: '';
+    position: absolute;
+    inset: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(132,12,214,0.14);
+  }
+  .deco-diamond {
+    width: 30px; height: 30px;
+    border: 1.5px solid rgba(132,12,214,0.32);
+    transform: rotate(45deg);
+    bottom: 12%; left: 5%;
+  }
+
+  .routing-head { text-align: center; margin-bottom: 4rem; }
+  .routing-headline {
+    font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-white);
+    line-height: 1.15;
+  }
+
+  .routing-grid {
+    display: grid;
+    grid-template-columns: 1fr 56px 1fr 56px 1fr;
+    align-items: stretch;
+  }
+
+  .routing-card {
+    border: 1px solid var(--white-08);
+    border-top: 2px solid var(--purple-22);
+    border-radius: 10px;
+    padding: 2rem 1.75rem;
+    background: var(--color-card);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    transition: border-top-color 0.22s, box-shadow 0.22s, transform 0.22s;
+  }
+  .routing-card:hover {
+    border-top-color: var(--color-purple);
+    box-shadow: 0 16px 48px rgba(132,12,214,0.12);
+    transform: translateY(-3px);
+  }
+  .rc-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(191,127,255,0.6);
+    letter-spacing: 0.1em;
+  }
+  :global(html[data-theme="light"]) .rc-num { color: #7A1FC4; }
+  .rc-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-white);
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+  }
+  .rc-desc {
+    font-size: 14px;
+    color: var(--white-55);
+    line-height: 1.8;
+    flex: 1;
+  }
+  .rc-tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-purple);
+    letter-spacing: 0.02em;
+  }
+  .rc-cta {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-purple);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s;
+    margin-top: 0.25rem;
+  }
+  .rc-cta:hover { opacity: 0.7; }
+
+  /* Stagger the 3 routing cards (positions 1, 3, 5 in a 5-col grid) */
+  .routing-grid .routing-card:nth-child(1) { transition-delay: 0s; }
+  .routing-grid .routing-card:nth-child(3) { transition-delay: 0.1s; }
+  .routing-grid .routing-card:nth-child(5) { transition-delay: 0.2s; }
+
+  .routing-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ══════════════════════════════════════
+     SERVICES
+  ══════════════════════════════════════ */
+  .services-section { padding: 3.5rem 1.75rem 0; border-bottom: 1px solid var(--purple-22); background: var(--color-black); }
+  .services-inner { max-width: 1140px; margin: 0 auto; padding-bottom: 3.5rem; }
+  .services-head { margin-bottom: 2.5rem; }
+  .services-headline {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-white);
+    line-height: 1.15;
+  }
+  .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 2.5rem; }
+  .service-card { border: 1px solid var(--white-08); border-top: 2px solid var(--purple-22); border-radius: 8px; padding: 1.5rem; background: var(--color-card); transition: border-top-color 0.2s, transform 0.25s, box-shadow 0.25s; display: flex; flex-direction: column; }
+  .service-card:hover { border-top-color: var(--color-purple); transform: translateY(-3px); box-shadow: 0 14px 36px rgba(132,12,214,0.15); }
+  .service-icon { font-family: var(--font-mono); font-size: 20px; color: var(--color-purple); font-weight: 500; margin-bottom: 0.85rem; letter-spacing: -0.02em; }
+  .service-title { font-size: 16px; font-weight: 700; color: var(--color-white); margin-bottom: 0.65rem; letter-spacing: -0.01em; }
+  .service-desc { font-size: 14px; color: var(--white-55); line-height: 1.75; margin-bottom: 1rem; }
+  .service-deliverables { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .service-deliverables li { font-size: 13px; color: var(--color-grey); font-family: var(--font-mono); padding-left: 1rem; position: relative; }
+  .service-deliverables li::before { content: '→'; position: absolute; left: 0; color: var(--color-purple); font-size: 11px; }
+  .service-samples-link { display: inline-block; margin-top: auto; padding-top: 1.1rem; font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--color-purple); text-decoration: none; letter-spacing: 0.04em; transition: opacity 0.2s; }
+  .service-samples-link:hover { opacity: 0.7; }
+  .services-cta { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 1.75rem 2rem; border: 1px solid var(--purple-22); border-radius: 8px; background: rgba(132,12,214,0.04); flex-wrap: wrap; }
+  .services-cta-text { color: var(--white-55); font-size: 17px; }
+  .services-cta-btn { font-size: 15px !important; padding: 13px 28px !important; }
+
+  /* ══════════════════════════════════════
+     HOW I WORK — process
+  ══════════════════════════════════════ */
+  .process-section {
+    background: var(--color-black);
+    padding: 5.5rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Blueprint-style grid lines, fading out toward the centre — fits a "how I
+     work" section better than a dot field, and reads nothing like the other
+     sections' decoration */
+  .process-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='44' height='44' viewBox='0 0 44 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M44 0H0V44' stroke='rgba(132,12,214,0.16)' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+    background-size: 44px 44px;
+    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, transparent 35%, black 100%);
+    mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, transparent 35%, black 100%);
+    pointer-events: none;
+  }
+  .process-inner { max-width: 1140px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .process-head {
+    max-width: 620px;
+    margin: 0 auto 5rem;
+    text-align: center;
+  }
+  .process-headline {
+    font-size: clamp(24px, 3.5vw, 38px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-white);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .process-sub {
+    font-size: 16px;
+    color: var(--white-55);
+    line-height: 1.8;
+  }
+
+  .process-flow {
+    display: grid;
+    grid-template-columns: 1fr 72px 1fr 72px 1fr;
+    align-items: center;
+    gap: 0;
+  }
+
+  .process-step {
+    position: relative;
+    background: var(--surface-eggplant);
+    border-radius: 14px;
+    padding: 2.5rem 2rem 2rem;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(132,12,214,0.12), 0 1px 4px rgba(0,0,0,0.3);
+    border: 1px solid rgba(132,12,214,0.2);
+    align-self: stretch;
+  }
+  .ps-bg-num {
+    position: absolute;
+    bottom: -0.25em;
+    right: -0.05em;
+    font-family: var(--font-sans);
+    font-size: 160px;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+  :global(html[data-theme="light"]) .ps-bg-num { color: rgba(23,11,36,0.05); }
+  .ps-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    height: 100%;
+  }
+  .ps-step-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(191,127,255,0.7);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  :global(html[data-theme="light"]) .ps-step-label { color: #7A1FC4; }
+  .ps-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-white);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+  .ps-desc {
+    font-size: 14px;
+    color: var(--white-55);
+    line-height: 1.85;
+    flex: 1;
+  }
+  .ps-outcome {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: #bf7fff;
+    background: rgba(132,12,214,0.12);
+    border: 1px solid rgba(132,12,214,0.25);
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+  /* Pale purple text on a pale purple badge is too low-contrast on the
+     light theme's near-white process cards — deepen it. */
+  :global(html[data-theme="light"]) .ps-outcome { color: #7A1FC4; }
+
+  .process-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  .pc-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(191,127,255,0.55);
+  }
+  :global(html[data-theme="light"]) .pc-label { color: #8A4FC4; }
+
+  /* ══════════════════════════════════════
+     WHY NOT AN AGENCY — differentiators
+  ══════════════════════════════════════ */
+  .diff-section {
+    /* Two soft, asymmetric glows — an organic counterpoint to process's hard grid
+       lines and routing's rings. As background layers, not pseudo-elements,
+       because .diff-left below uses position:sticky and an overflow:hidden
+       ancestor (needed to clip absolute shapes) would break that. */
+    background:
+      radial-gradient(circle 460px at 4% 96%, rgba(132,12,214,0.22) 0%, transparent 70%),
+      radial-gradient(circle 320px at 100% 4%, rgba(132,12,214,0.14) 0%, transparent 70%),
+      var(--color-black);
+    background-repeat: no-repeat, no-repeat;
+    padding: 5.5rem 1.75rem;
+    border-top: 1px solid var(--purple-22);
+    border-bottom: 1px solid var(--purple-22);
+  }
+  .diff-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .diff-left { position: sticky; top: 7rem; }
+  .diff-headline {
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-white);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .diff-sub {
+    font-size: 15px;
+    color: var(--white-55);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+  .diff-cta { font-size: 14px !important; padding: 12px 22px !important; }
+
+  .diff-right { display: flex; flex-direction: column; }
+  .diff-item {
+    display: flex;
+    gap: 1.75rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--purple-22);
+    align-items: flex-start;
+    transition: background 0.2s;
+  }
+  .diff-item:first-child { padding-top: 0; }
+  .diff-item:last-child { border-bottom: none; }
+  .di-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(132,12,214,0.4);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    padding-top: 0.2rem;
+    min-width: 24px;
+  }
+  .di-body { display: flex; flex-direction: column; gap: 0.45rem; }
+  .di-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-white);
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+  .di-desc {
+    font-size: 14px;
+    color: var(--white-55);
+    line-height: 1.8;
+  }
+
+  /* ══════════════════════════════════════
+     ENGAGEMENT MODELS
+  ══════════════════════════════════════ */
+  .engagement-section {
+    padding: 5rem 1.75rem;
+    background: var(--color-black);
+    position: relative;
+    overflow: hidden;
+  }
+  /* A single contained dot-cluster, not a repeated texture — a small, deliberate
+     accent rather than another full-bleed pattern */
+  .engagement-section::before {
+    content: '';
+    position: absolute;
+    top: 14%; right: 7%;
+    width: 64px; height: 64px;
+    background-image: radial-gradient(circle, rgba(132,12,214,0.4) 1.8px, transparent 1.8px);
+    background-size: 18px 18px;
+    pointer-events: none;
+  }
+  .engagement-section .deco-diamond { top: auto; bottom: 16%; left: 6%; right: auto; }
+  .engagement-inner { max-width: 1140px; margin: 0 auto; position: relative; z-index: 1; }
+  .engagement-headline {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-white);
+    margin-bottom: 2.5rem;
+    line-height: 1.15;
+  }
+  .engagement-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 3rem; }
+  .engagement-item {
+    padding: 1.75rem 1.5rem;
+    border: 1px solid var(--white-08);
+    border-top: 2px solid var(--purple-22);
+    border-radius: 10px;
+    background: var(--color-card);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-top-color 0.2s, box-shadow 0.2s;
+  }
+  .engagement-item:hover { border-top-color: var(--color-purple); box-shadow: 0 8px 28px rgba(132,12,214,0.12); }
+  .em-icon {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: var(--color-purple);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .engagement-title { font-size: 16px; font-weight: 700; color: var(--color-white); letter-spacing: -0.01em; }
+  .engagement-desc { font-size: 14px; color: var(--white-55); line-height: 1.7; }
+  .engagement-cta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .engagement-ghost {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white-55);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .engagement-ghost:hover { color: var(--color-white); }
+
+  /* ── Utility ── */
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+
+  /* ══════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════ */
+  @media (max-width: 1000px) {
+    .diff-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .diff-left { position: static; }
+  }
+  @media (max-width: 900px) {
+    .services-grid { grid-template-columns: repeat(2,1fr); }
+    .engagement-grid { grid-template-columns: repeat(2,1fr); }
+  }
+  @media (max-width: 760px) {
+    .routing-grid { grid-template-columns: 1fr; }
+    .routing-arrow { padding: 0.25rem 0; }
+    .routing-arrow svg { transform: rotate(90deg); }
+    .process-flow { grid-template-columns: 1fr; gap: 0; }
+    .process-connector { padding: 0.5rem 0; }
+    .process-connector svg { transform: rotate(90deg); }
+    .pc-label { display: none; }
+    .process-step { align-self: auto; }
+    .ps-bg-num { font-size: 100px; }
+  }
+  @media (max-width: 560px) {
+    .routing-section, .process-section, .diff-section, .engagement-section { padding: 3.5rem 1.25rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .engagement-grid { grid-template-columns: 1fr; }
+    .routing-head { margin-bottom: 2.5rem; }
+    .process-head { margin-bottom: 3rem; }
+    .services-cta { flex-direction: column; align-items: flex-start; }
+  }
+</style>

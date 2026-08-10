@@ -1,0 +1,71 @@
+---
+const socialLinks = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/zaycodes/', icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>` },
+  { label: 'X / Twitter', href: 'https://twitter.com/Zayc0des', icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>` },
+  { label: 'GitHub', href: 'https://github.com/zaycodes', icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>` },
+  { label: 'Hashnode', href: 'https://zaycodes.hashnode.dev/', icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.414 2.586a2 2 0 00-2.828 0L2.586 10.586a2 2 0 000 2.828l8 8a2 2 0 002.828 0l8-8a2 2 0 000-2.828l-8-8zm-.707 9.9a1.75 1.75 0 110-2.475 1.75 1.75 0 010 2.475z"/></svg>` },
+  { label: 'Medium', href: 'https://medium.com/@zaycodes', icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>` },
+  { label: 'Substack', href: 'https://zaycodes.substack.com', icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>` },
+  { label: 'Instagram', href: 'https://www.instagram.com/zaycodes/', icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>` },
+];
+
+const footerLinks = [
+  { href: '/work', label: 'Work' },
+  { href: '/about', label: 'About' },
+  { href: '/work-with-me', label: 'Work With Me' },
+  { href: '/speaking', label: 'Speaking' },
+  { href: '/resources', label: 'Resources' },
+];
+---
+<footer class="footer" aria-label="Site footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <a href="/" class="footer-logo" aria-label="Zaycodes — home">
+        <span class="footer-logo-chip">
+          <img src="/images/zaycodes-wordmark.png" alt="zaycodes" class="footer-wordmark" />
+        </span>
+      </a>
+      <nav aria-label="Footer navigation">
+        <ul class="footer-nav" role="list">
+          {footerLinks.map(link => (<li><a href={link.href} class="footer-nav-link">{link.label}</a></li>))}
+        </ul>
+      </nav>
+      <div class="social-links" role="list" aria-label="Social media links">
+        {socialLinks.map(link => (
+          <a href={link.href} class="social-link" target="_blank" rel="noopener noreferrer" aria-label={link.label} role="listitem">
+            <Fragment set:html={link.icon} />
+          </a>
+        ))}
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© {new Date().getFullYear()} Zainab Daodu · zaycodes.com · All rights reserved</p>
+      <p class="footer-built">Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--color-black); border-top: 1px solid var(--purple-22); padding: 2rem 1.75rem; }
+  .footer-inner { max-width: 1140px; margin: 0 auto; }
+  .footer-top { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--purple-22); }
+  .footer-logo { display: flex; align-items: center; text-decoration: none; }
+  .footer-logo-chip { display: inline-flex; align-items: center; border-radius: 6px; transition: background var(--transition-base); }
+  /* Same fix as the nav wordmark: the PNG is light text made for a dark
+     backdrop, so it needs a dark chip once the footer itself goes light. */
+  :global(html[data-theme="light"]) .footer-logo-chip { background: #0d0716; padding: 4px 8px; }
+  .footer-wordmark { height: 22px; width: auto; display: block; }
+  .logo-mark { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--color-purple); display: flex; align-items: center; justify-content: center; }
+  .footer-logo span { color: var(--white-55); font-size: 16px; font-weight: 600; }
+  .footer-nav { display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap; }
+  .footer-nav-link { color: var(--color-grey); font-size: 15px; font-weight: 500; text-decoration: none; transition: color 0.2s; }
+  .footer-nav-link:hover { color: var(--color-white); }
+  .social-links { display: flex; align-items: center; gap: 0.6rem; }
+  .social-link { width: 34px; height: 34px; border-radius: 4px; border: 1px solid var(--white-08); display: flex; align-items: center; justify-content: center; color: var(--color-grey); text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+  .social-link:hover { border-color: var(--color-purple); color: var(--color-purple); }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .footer-copy, .footer-built { color: var(--color-grey); font-size: 14px; font-family: var(--font-mono); }
+  .footer-built a { color: var(--color-purple); text-decoration: none; }
+  .footer-built a:hover { text-decoration: underline; }
+  @media (max-width: 700px) { .footer-top { flex-direction: column; align-items: flex-start; gap: 1rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } }
+</style>

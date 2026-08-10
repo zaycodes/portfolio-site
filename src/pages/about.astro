@@ -1,0 +1,745 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import CtaLeadBlock from '../components/CtaLeadBlock.astro';
+import MediaKit from '../components/MediaKit.astro';
+import Newsletter from '../components/Newsletter.astro';
+import Footer from '../components/Footer.astro';
+import { toolGroups } from '../data/work';
+
+const HEADSHOT = '/images/zainab-headshot.png';
+const colorMap: Record<string, string> = {
+  purple: 'tool-purple', teal: 'tool-teal', yellow: 'tool-yellow',
+  mint: 'tool-mint', neutral: 'tool-neutral',
+};
+
+const WIKIMEDIA_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Wikimedia-logo.svg/120px-Wikimedia-logo.svg.png';
+// Tealium's asset is a pre-made white variant meant for dark backgrounds — a white chip
+// behind it would hide it, so it renders bare instead of on the usual neutral chip.
+const isBareLogo = (src: string) => src.includes('tealium.svg');
+
+const recIcons: Record<string, string> = {
+  education: '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.66 2.69 3 6 3s6-1.34 6-3v-4.5"/>',
+  honor: '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+  opensource: '<line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 01-9 9"/>',
+};
+
+const recognitions = [
+  { year: '2023', title: 'MSc Project Management — Distinction', org: 'Teesside University, Middlesbrough', type: 'education' },
+  { year: '2022', title: 'OpenUK Honours List — Open Technology', org: 'OpenUK', link: 'https://openuk.uk/community/openuk-honours-lists/2022honourslist/', type: 'honor' },
+  { year: '2022', title: 'Spotlight — 5 Women in Technical Writing You Should Know', org: 'The Stack Journal', link: 'https://x.com/thestackjournal/status/1564231785222995968?s=46&t=KZhBIYvkEMhZ2eZmS9i0ZVENM9pZMhJmdwYpo0Bmi3Q', type: 'honor' },
+  { year: '2021', title: '10 Contributors Shaping the Future of Continuous Delivery & DevOps', org: 'Continuous Delivery Foundation', link: 'https://cd.foundation/blog/2021/02/05/celebrating-black-history-month-and-our-amazing-community/', type: 'honor' },
+  { year: '2020', title: 'Google Season of Docs (GSOD) — Jenkins Project', org: 'Google', link: 'https://www.jenkins.io/sigs/docs/gsod/2020/', type: 'opensource' },
+  { year: '2019', title: 'Outreachy Intern — Technical Writing', org: 'Wikimedia Foundation', link: 'https://www.outreachy.org/alums/2019-12/', type: 'opensource' },
+  { year: '2015', title: 'BSc Computer Science — Second Class Upper', org: 'Al-Hikmah University, Nigeria', type: 'education' },
+];
+
+// Sunburst seal/medal motif for the Recognition section — pure decoration, no
+// data. Tick marks generated rather than hand-placed so spacing stays exact.
+const sealTicks = Array.from({ length: 32 }, (_, i) => {
+  const angle = (i / 32) * Math.PI * 2;
+  const rInner = 86, rOuter = 102;
+  return {
+    x1: 110 + rInner * Math.cos(angle), y1: 110 + rInner * Math.sin(angle),
+    x2: 110 + rOuter * Math.cos(angle), y2: 110 + rOuter * Math.sin(angle),
+  };
+});
+
+const storyPhases = [
+  {
+    id: 'origin',
+    num: '01',
+    label: 'The Origin',
+    years: '2017 – 2019',
+    icon: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+    paragraphs: [
+      "My career started on the engineering side of the table, years before I would trade writing code for building the documentation around it.",
+      "At Interswitch, Africa's leading payments company, I worked as a software engineer building payment solutions and API infrastructure. This involved payment processing, access control, security management, analytics, and the two-factor authentication that secured Interswitch's applications. The products were solid, but developers kept failing to integrate, and no amount of engineering on the backend was fixing it.",
+      'I realized the gap wasn’t in the code, but in the communication around it So, I led the documentation revamp. I introduced an open-source tool to consolidate everything scattered across formats, and built a converter that turned Postman collections into structured Markdown automatically, cutting developer onboarding time by 40%. The work was more technically demanding than people expect from writing, and it was closer to the actual user than anything I had shipped as an engineer. I did not want to go back.',
+    ],
+    stats: [{ value: '40%', label: 'faster developer onboarding' }],
+    logos: [{ name: 'Interswitch', src: '/images/logos/interswitch.png' }],
+  },
+  {
+    id: 'pivot',
+    num: '02',
+    label: 'The Pivot',
+    years: '2019 – 2020',
+    icon: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+    paragraphs: [
+      'Open source became the next chapter.',
+      'A colleague once mentioned open source. Out of curiosity, I did my research, got involved, and I started contributing to Jenkins, where thousands of developers were running it on Kubernetes with no official documentation. I helped fill that gap by writing it. I also rewrote 30+ of the most-viewed Wikimedia API pages across multiple programming languages. The Continuous Delivery Foundation named me one of the Top 10 Contributors Shaping the Future of DevOps and Continuous Delivery.',
+      'When I landed my first full-time technical writing role, I was promoted to senior writer within a year. Open source had already given me depth that most entry-level hires spend years trying to build.',
+    ],
+    stats: [{ value: 'Top 10', label: 'DevOps & CD contributors, CD Foundation' }],
+    logos: [{ name: 'Jenkins', src: '/images/logos/jenkins.svg' }, { name: 'Wikimedia Foundation', src: WIKIMEDIA_LOGO }],
+  },
+  {
+    id: 'work',
+    num: '03',
+    label: 'The Work',
+    years: '2020 – Present',
+    icon: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>',
+    paragraphs: [
+      "Since then, I have worked alongside enterprise teams to solve documentation challenges at scale. At Tealium, I focused on building the systems behind documentation, from GitHub deployment pipelines to automated style checks and a clearer site architecture. At Cisco’s ThousandEyes, I owned documentation for the v7 API launch, guiding it from Limited Preview to the platform’s default API while documenting over 300 endpoints across 20 product areas. The API now supports 88% of production API traffic.",
+      "My work has also taken me across Google’s developer documentation, blockchain documentation at Rootstock and RIF, and the creation of a five-module curriculum for Magnopus’s Connected Spaces Platform.",
+    ],
+    stats: [
+      { value: '88%', label: 'of production API traffic served' },
+      { value: '300+', label: 'API endpoints documented end to end' },
+      { value: '20+', label: 'product areas owned solo' },
+    ],
+    logos: [
+      { name: 'Cisco · ThousandEyes', src: '/images/logos/thousandeyes.avif' },
+      { name: 'Tealium', src: '/images/logos/tealium.svg' },
+      { name: 'Google', src: '/images/logos/google.svg' },
+      { name: 'IOV Labs · Rootstock', src: '/images/logos/rootstock.svg' },
+      { name: 'Magnopus', src: '/images/logos/magnopus.webp' },
+    ],
+  },
+  {
+    id: 'community',
+    num: '04',
+    label: 'The Community',
+    years: 'Ongoing',
+    icon: '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>',
+    paragraphs: [
+      'As Open Source Programs Manager at She Code Africa, a pan-African non-profit supporting women in technology, I launched a global open-source bootcamp that mentored 500+ African women, paired them with international organisations, and secured over $20,000 in funding from partners including CloudBees and the Continuous Delivery Foundation.',
+      'One of those mentees, Ruth Ikegah, went on to become a five-time GitHub Star and open-source board member. Seeing what that support could unlock, I continued building spaces for technical writers to grow. I founded WriteTech Hub after noticing a gap between what companies needed from technical writers and the skills many aspiring writers had access to learn. The community has since trained over 600 writers, many of whom now work at leading technology companies. The Stack Journal later named me one of the five technical writing women you should know.',
+    ],
+    stats: [
+      { value: '600+', label: 'writers mentored globally' },
+      { value: '500+', label: 'African women empowered, She Code Africa' },
+    ],
+    logos: [
+      { name: 'She Code Africa', src: '/images/logos/she-code-africa.png' },
+      { name: 'WriteTech Hub', src: '/images/logos/writetechhub.png' },
+      { name: 'Jenkins', src: '/images/logos/jenkins.svg' },
+    ],
+  },
+];
+---
+
+<BaseLayout title="About — Zainab Daodu" description="Senior Technical Writer with 8+ years of experience. Backend developer turned documentation engineer.">
+  <Nav />
+  <div class="about-page">
+
+    <!-- HEADER -->
+    <header class="about-header">
+      <img src="/images/zainab-speaking-designday-2.jpeg" alt="" class="about-header-bg" loading="eager" aria-hidden="true" />
+      <div class="about-header-overlay" aria-hidden="true"></div>
+      <div class="container">
+        <div class="about-header-inner">
+          <div class="about-text">
+            <p class="page-eyebrow">About</p>
+            <h1 class="about-title">Zainab Daodu</h1>
+            <p class="about-tagline">Senior Technical Writer · Backend developer turned documentation engineer</p>
+            <div class="about-header-btns">
+              <a href="/work" class="btn-primary">View My Work →</a>
+            </div>
+          </div>
+
+          <!-- About photo -->
+          <div class="about-photo-wrap">
+            <div class="about-photo-frame">
+              <img src={HEADSHOT} alt="Zainab Daodu" class="about-photo" loading="eager" />
+            </div>
+            <span class="about-zd-mono" aria-hidden="true">ZD</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <CtaStrip />
+
+    <main>
+      <!-- BIO -->
+      <section class="bio-section" aria-labelledby="bio-heading">
+        <div class="container">
+          <h2 id="bio-heading" class="section-label">The Story</h2>
+
+          <div class="story-timeline">
+            <span class="story-spine" aria-hidden="true"></span>
+            {storyPhases.map((phase, i) => (
+              <div class:list={['story-phase', i % 2 === 0 ? 'story-phase--left' : 'story-phase--right']}>
+                <div class="story-card scroll-fade">
+                  <span class="story-ghost-num" aria-hidden="true">{phase.num}</span>
+                  <div class="story-phase-head">
+                    <span class="story-icon-badge" aria-hidden="true">
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" set:html={phase.icon}></svg>
+                    </span>
+                    <span class="story-phase-label">{phase.label}</span>
+                    <span class="story-years">{phase.years}</span>
+                  </div>
+                  {phase.paragraphs.map(p => <p class="story-p">{p}</p>)}
+                </div>
+
+                <div class="story-proof-card scroll-fade">
+                  <div class="story-proof-stats">
+                    {phase.stats.map(s => (
+                      <div class="story-proof-stat">
+                        <span class="story-proof-num">{s.value}</span>
+                        <span class="story-proof-label">{s.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div class="story-proof-logos">
+                    {phase.logos.map(l => (
+                      <img
+                        src={l.src}
+                        alt={l.name}
+                        class:list={['story-logo', { 'story-logo--bare': isBareLogo(l.src) }]}
+                        loading="lazy"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <span class="story-node" aria-hidden="true"></span>
+                <span class="story-link" aria-hidden="true"></span>
+              </div>
+            ))}
+          </div>
+
+          <div class="bio-btns">
+            <a href="/work-with-me" class="btn-primary btn-cta">
+              Work With Me →
+            </a>
+            <MediaKit />
+          </div>
+        </div>
+      </section>
+
+      <!-- TOOLS -->
+      <section class="tools-section" aria-labelledby="tools-heading">
+        <div class="container">
+          <h2 id="tools-heading" class="section-label">Tools &amp; Technology</h2>
+          <div class="tools-grid stagger-children">
+            {toolGroups.map(group => (
+              <div class="tool-group scroll-fade">
+                <h3 class="tool-group-label">{group.label}</h3>
+                <div class="tool-pills">
+                  {group.tools.map(tool => (
+                    <span class={`tool-pill ${colorMap[group.color] || 'tool-neutral'}`}>{tool}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERTISE -->
+      <section class="expertise-section" aria-labelledby="expertise-heading">
+        <div class="container">
+          <h2 id="expertise-heading" class="section-label">Areas of Expertise</h2>
+          <div class="expertise-grid stagger-children">
+            {[
+              { icon: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>', title: 'API & Developer Documentation', desc: 'End-to-end ownership of developer documentation, from architecture decisions and OpenAPI specifications to published references and migration resources.' },
+              { icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>', title: 'Product Documentation', desc: 'Strategic documentation for SaaS and developer platforms, focused on adoption, self-service, and user success.' },
+              { icon: '<path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>', title: 'UX Writing', desc: 'Content design that connects product decisions with user needs through clear, consistent experiences.' },
+              { icon: '<polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>', title: 'Documentation Operations', desc: 'The processes and tooling that make documentation sustainable, including automation, CI/CD, and docs-as-code workflows.' },
+            ].map(ex => (
+              <div class="expertise-card scroll-fade">
+                <div class="ex-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" set:html={ex.icon}></svg>
+                </div>
+                <h3>{ex.title}</h3>
+                <p>{ex.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- RECOGNITION -->
+      <section class="recognition-section" aria-labelledby="recognition-heading">
+        <div class="container">
+          <h2 id="recognition-heading" class="section-label">Education &amp; Recognition</h2>
+          <div class="recognition-body">
+            <div class="recognition-list stagger-children">
+              {recognitions.map(r => (
+                <div class="recognition-item scroll-fade">
+                  <span class="rec-year">{r.year}</span>
+                  <div class="rec-icon" aria-hidden="true">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" set:html={recIcons[r.type]}></svg>
+                  </div>
+                  <div class="rec-main">
+                    {r.link ? (
+                      <a href={r.link} class="rec-title rec-link" target="_blank" rel="noopener noreferrer">{r.title}</a>
+                    ) : (
+                      <p class="rec-title">{r.title}</p>
+                    )}
+                    <p class="rec-org">{r.org}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <aside class="rec-summary scroll-fade" aria-hidden="true">
+              <svg width="220" height="220" viewBox="0 0 220 220" class="rec-seal">
+                <circle cx="110" cy="110" r="84" fill="none" stroke="rgba(132,12,214,0.2)" stroke-width="1" />
+                <circle cx="110" cy="110" r="60" fill="none" stroke="rgba(132,12,214,0.13)" stroke-width="1" />
+                {sealTicks.map(t => (
+                  <line x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="rgba(132,12,214,0.3)" stroke-width="1.5" stroke-linecap="round" />
+                ))}
+                <text x="110" y="121" text-anchor="middle" font-family="var(--font-mono)" font-size="32" font-weight="800" letter-spacing="-1" class="rec-seal-mark">ZD</text>
+              </svg>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <CtaLeadBlock />
+  <Newsletter />
+  <Footer />
+</BaseLayout>
+
+<style>
+  .about-page { background: var(--color-black); min-height: 100vh; }
+  .about-header {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--purple-22);
+    padding: 3.5rem 0;
+  }
+  .about-header-bg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 20%;
+    display: block;
+    opacity: 0.18;
+  }
+  .about-header-overlay {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 70% 50%, rgba(132,12,214,0.2) 0%, transparent 60%),
+      linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.8) 100%);
+  }
+  /* The dark scrim exists so light headline text stays legible over the
+     photo. In light mode the headline flips to dark ink, so the scrim
+     flips to a light wash (tinted to the light theme's page background)
+     instead — otherwise dark text would sit on a dark island. */
+  :global(html[data-theme="light"]) .about-header-overlay {
+    background:
+      radial-gradient(ellipse at 70% 50%, rgba(132,12,214,0.12) 0%, transparent 60%),
+      linear-gradient(to bottom, rgba(242,238,248,0.65) 0%, rgba(242,238,248,0.92) 100%);
+  }
+  .about-header .container { position: relative; z-index: 1; }
+  .about-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 3rem; flex-wrap: wrap; }
+  .about-text { flex: 1; min-width: 260px; }
+  .page-eyebrow { font-family: var(--font-mono); font-size: 12px; color: var(--color-purple); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .about-title { font-size: clamp(36px, 6vw, 58px); font-weight: 800; color: var(--color-white); letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 0.65rem; }
+  .about-tagline { color: var(--white-55); font-size: 16px; font-family: var(--font-mono); margin-bottom: 1.75rem; }
+  .about-header-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* About photo */
+  .about-photo-wrap { flex-shrink: 0; position: relative; }
+  .about-photo-frame { position: relative; width: 320px; z-index: 1; }
+  .about-photo-frame::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(132,12,214,0.2);
+    background: radial-gradient(circle, rgba(132,12,214,0.07) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -48%);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .about-zd-mono {
+    position: absolute;
+    bottom: -16px; right: -24px;
+    font-size: 100px; font-weight: 900;
+    color: rgba(132,12,214,0.06);
+    letter-spacing: -0.06em; line-height: 1;
+    z-index: 0; user-select: none; pointer-events: none;
+  }
+  .about-photo {
+    width: 100%; display: block; position: relative; z-index: 1;
+    filter: drop-shadow(0 20px 48px rgba(132,12,214,0.22)) drop-shadow(0 8px 24px rgba(0,0,0,0.6));
+    mask-image: linear-gradient(to bottom, black 72%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 72%, transparent 100%);
+  }
+
+  /* Every section shares one true-black background — sections are told apart by
+     borders, spacing, and content design, not by shifting between near-black hues */
+  .bio-section, .tools-section, .expertise-section, .recognition-section, .media-kit-section { padding: 4rem 0; }
+  .bio-section, .tools-section, .expertise-section, .recognition-section {
+    background: var(--color-black);
+    border-bottom: 1px solid var(--white-08);
+    position: relative;
+  }
+  .bio-section, .tools-section, .expertise-section { overflow: hidden; }
+  /* No overflow:hidden here — .rec-summary below uses position:sticky, and an
+     overflow:hidden ancestor breaks sticky positioning */
+  .recognition-section { border-bottom: none; }
+  /* Decorative shapes below are absolutely positioned, which (with z-index:auto)
+     paint above static in-flow content by default — lift the actual content
+     above them explicitly */
+  .tools-section .container, .expertise-section .container, .recognition-section .container {
+    position: relative;
+    z-index: 1;
+  }
+  .section-label { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-purple); margin-bottom: 1.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--purple-22); }
+
+  /* ── Section decoration — each gets its own distinct shape language rather than
+     one pattern repeated down the page. The Story section already has plenty of
+     visual interest from the timeline itself, so it's left alone. ── */
+
+  /* Tools & Technology — a single soft glow, fits a dense, practical pill grid */
+  .tools-section::before {
+    content: '';
+    position: absolute;
+    bottom: -140px; right: -80px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(132,12,214,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Areas of Expertise — geometric outlines, framing the card grid with structure */
+  .expertise-section::before {
+    content: '';
+    position: absolute;
+    top: -70px; left: -70px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    border: 1px solid rgba(132,12,214,0.2);
+    pointer-events: none;
+  }
+  .expertise-section::after {
+    content: '';
+    position: absolute;
+    width: 26px; height: 26px;
+    border: 1.5px solid rgba(132,12,214,0.28);
+    transform: rotate(45deg);
+    bottom: 18%; right: 6%;
+    pointer-events: none;
+  }
+
+  /* Education & Recognition — kept quiet on purpose; this list reads as a record,
+     not a feature, so it gets only a faint glow rather than a busy pattern */
+  .recognition-section::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -100px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(132,12,214,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Story — two-up timeline on a pure black canvas: narrative card on one side,
+     a metrics + logos "proof" card on the other, alternating per phase. Both sides
+     always carry real content, so there's no dead space to dress up with filler. */
+  .story-timeline { position: relative; padding: 0.5rem 0; }
+
+  .story-spine {
+    position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, rgba(132,12,214,0.3) 6%, rgba(132,12,214,0.3) 94%, transparent);
+    transform: translateX(-50%);
+  }
+
+  /* Not a grid — grid's align-items:center centers on whichever box is taller,
+     which flips depending on how much text vs. stats each phase has. The proof
+     card and connector are taken out of flow entirely and pinned to 50% of
+     .story-phase's height, which (since the story card is the only thing left
+     in flow) always equals the story card's own height. That's what keeps the
+     node centered on the story specifically, on every phase, regardless of content. */
+  .story-phase {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+  .story-phase:last-child { margin-bottom: 0; }
+
+  .story-card { width: calc(50% - 1.625rem); }
+  .story-phase--left .story-card  { margin-right: auto; }
+  .story-phase--right .story-card { margin-left: auto; }
+
+  .story-proof-card {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(50% - 1.625rem);
+  }
+  .story-phase--left .story-proof-card  { left: calc(50% + 1.625rem); }
+  .story-phase--right .story-proof-card { right: calc(50% + 1.625rem); }
+
+  .story-node {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--color-black);
+    border: 2px solid var(--color-purple);
+    box-shadow: 0 0 0 4px rgba(132,12,214,0.16);
+    z-index: 2;
+  }
+
+  /* Connects the timeline node to its proof annotation — makes the link between
+     the story and its numbers explicit instead of leaving two same-weight boxes
+     floating side by side with no visible relationship. Centered on the row, which
+     in practice means centered on the (taller) narrative card. */
+  .story-link {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 3.25rem;
+    height: 2px;
+    background: rgba(132,12,214,0.35);
+    transform: translate(-50%, -50%);
+    z-index: 0;
+  }
+
+  .story-card {
+    position: relative;
+    background: var(--color-card);
+    border: 1px solid var(--white-08);
+    border-radius: 12px;
+    padding: 1.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: hidden;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .story-card:hover { border-color: rgba(132,12,214,0.3); transform: translateY(-3px); }
+
+  .story-ghost-num {
+    position: absolute;
+    top: 0.25rem; right: 1.1rem;
+    font-family: var(--font-sans);
+    font-size: 60px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--white-08);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .story-phase-head { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; position: relative; z-index: 1; }
+  .story-icon-badge {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(132,12,214,0.1);
+    color: var(--color-purple);
+    flex-shrink: 0;
+  }
+  .story-phase-label { font-size: clamp(19px, 2.2vw, 22px); font-weight: 800; color: var(--color-white); letter-spacing: -0.02em; }
+  .story-years { font-family: var(--font-mono); font-size: 12px; color: var(--white-30); letter-spacing: 0.04em; }
+
+  .story-p { color: var(--white-55); font-size: 15px; line-height: 1.8; position: relative; z-index: 1; }
+
+  /* Proof annotation — a small secondary tag pinned to the timeline via .story-link,
+     deliberately lighter and more compact than the narrative card, never matching
+     its size or weight */
+  .story-proof-card {
+    z-index: 1;
+    max-width: 230px;
+    background: var(--white-08);
+    border: 1px solid rgba(132,12,214,0.18);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .story-proof-stats { display: flex; flex-direction: column; gap: 0.55rem; }
+  .story-proof-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .story-proof-num {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-purple);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+  .story-proof-label { font-size: 11.5px; color: var(--white-55); line-height: 1.35; }
+
+  .story-proof-logos {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--white-08);
+  }
+
+  .story-logo { height: 18px; width: auto; max-width: 62px; object-fit: contain; background: rgba(255,255,255,0.94); border-radius: 3px; padding: 3px 6px; }
+  .story-logo--bare { background: none; padding: 0; height: 21px; }
+
+  /* Tools */
+  .tools-grid { display: flex; flex-direction: column; gap: 2rem; }
+  .tool-group { display: flex; flex-direction: column; align-items: center; gap: 0.85rem; text-align: center; }
+  .tool-group-label { font-size: 13px; font-weight: 700; color: var(--color-white); letter-spacing: 0.04em; text-transform: uppercase; padding-bottom: 0.5rem; border-bottom: 1px solid var(--purple-22); width: 100%; }
+  .tool-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .tool-pill { font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 100px; letter-spacing: 0.01em; cursor: default; animation: toolFloat 3s ease-in-out infinite; transition: opacity 0.2s, transform 0.2s; }
+  .tool-pill:nth-child(2n) { animation-delay: 0.3s; } .tool-pill:nth-child(3n) { animation-delay: 0.6s; }
+  .tool-pill:nth-child(4n) { animation-delay: 0.9s; } .tool-pill:nth-child(5n) { animation-delay: 1.2s; }
+  .tool-pill:hover { opacity: 0.85; transform: translateY(-2px) scale(1.02); }
+  @keyframes toolFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  .tool-purple { background: rgba(132,12,214,0.07); color: #a070d9; }
+  .tool-teal { background: rgba(14,168,118,0.06); color: #15B889; }
+  .tool-yellow { background: rgba(255,255,161,0.04); color: #b0b03a; }
+  .tool-mint { background: rgba(198,255,230,0.04); color: #5cb894; }
+  .tool-neutral { background: var(--white-08); color: var(--white-55); }
+  /* Deeper counterparts for the light page background — consistent with
+     the same tint family used for badges elsewhere on the site. */
+  :global(html[data-theme="light"]) .tool-purple { color: #7A1FC4; }
+  :global(html[data-theme="light"]) .tool-teal { color: #0B7A56; }
+  :global(html[data-theme="light"]) .tool-yellow { color: #8A8A1F; }
+  :global(html[data-theme="light"]) .tool-mint { color: #0E8F63; }
+
+  /* Expertise */
+  .expertise-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+  .expertise-card { background: var(--color-card); border: 1px solid var(--white-08); border-top: 2px solid rgba(132,12,214,0.35); border-radius: 8px; padding: 1.5rem; transition: border-top-color 0.2s, transform 0.25s, box-shadow 0.25s; }
+  .expertise-card h3 { font-size: 16px; font-weight: 700; color: var(--color-white); margin-bottom: 0.6rem; letter-spacing: -0.01em; }
+  .expertise-card p { font-size: 14px; color: var(--white-55); line-height: 1.75; }
+  .ex-icon { width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.85rem; }
+
+  /* Card 1 — API & Developer Docs — purple (matches work badge) */
+  .expertise-card:nth-child(1) { border-top-color: var(--color-purple); }
+  .expertise-card:nth-child(1) .ex-icon { color: #a070d9; background: radial-gradient(circle at 35% 30%, rgba(132,12,214,0.26) 0%, rgba(132,12,214,0.06) 60%, transparent 100%); }
+  .expertise-card:nth-child(1):hover { box-shadow: 0 14px 40px rgba(132,12,214,0.18); }
+
+  /* Card 2 — Product Docs — teal (matches work badge) */
+  .expertise-card:nth-child(2) { border-top-color: #0EA876; }
+  .expertise-card:nth-child(2) .ex-icon { color: #15B889; background: radial-gradient(circle at 35% 30%, rgba(14,168,118,0.22) 0%, rgba(14,168,118,0.05) 60%, transparent 100%); }
+  .expertise-card:nth-child(2):hover { border-top-color: #0EA876; box-shadow: 0 14px 40px rgba(14,168,118,0.15); }
+
+  /* Card 3 — UX Writing — yellow (matches work badge) */
+  .expertise-card:nth-child(3) { border-top-color: #c8c840; }
+  .expertise-card:nth-child(3) .ex-icon { color: #b0b03a; background: radial-gradient(circle at 35% 30%, rgba(255,255,161,0.18) 0%, rgba(255,255,161,0.04) 60%, transparent 100%); }
+  .expertise-card:nth-child(3):hover { border-top-color: #c8c840; box-shadow: 0 14px 40px rgba(200,200,64,0.12); }
+
+  /* Card 4 — Doc Ops — neutral (matches work badge) */
+  .expertise-card:nth-child(4) { border-top-color: var(--white-22); }
+  .expertise-card:nth-child(4) .ex-icon { color: var(--white-55); background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 60%, transparent 100%); }
+  .expertise-card:nth-child(4):hover { border-top-color: var(--white-55); box-shadow: 0 14px 40px rgba(255,255,255,0.06); }
+  /* The "neutral" card's accent is white-based, which vanishes on the
+     light theme's near-white cards — swap to a dark-ink glow/shadow. */
+  :global(html[data-theme="light"]) .expertise-card:nth-child(4) .ex-icon { background: radial-gradient(circle at 35% 30%, rgba(23,11,36,0.08) 0%, rgba(23,11,36,0.02) 60%, transparent 100%); }
+  :global(html[data-theme="light"]) .expertise-card:nth-child(4):hover { box-shadow: 0 14px 40px rgba(23,11,36,0.1); }
+
+  .expertise-card:hover { transform: translateY(-3px); }
+
+  /* Recognition */
+  .recognition-body { display: flex; gap: 4rem; align-items: flex-start; }
+
+  /* Plain typographic list, oldest-to-newest top-to-bottom — no card chrome, just
+     text and a hairline divider. This is a chronological record, not a set of
+     interchangeable items, so it shouldn't look like UI tabs or cards. */
+  .recognition-list { display: flex; flex-direction: column; flex: 1; max-width: 700px; }
+
+  /* Right-side seal — pure decoration, not data. A medal/sunburst motif built
+     from the same line-art language as the rest of the site, with the page's
+     own "ZD" mark (already used in the header) at its centre. Sticky so it
+     stays in view while the list scrolls past it. */
+  .rec-summary {
+    flex-shrink: 0;
+    width: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 9rem;
+  }
+  .rec-seal { animation: recSealSpin 90s linear infinite; }
+  @keyframes recSealSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .rec-seal text { animation: recSealCounter 90s linear infinite; transform-origin: 110px 110px; }
+  @keyframes recSealCounter { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+  .rec-seal-mark { fill: rgba(255,255,255,0.14); }
+  :global(html[data-theme="light"]) .rec-seal-mark { fill: rgba(23,11,36,0.12); }
+
+  @media (max-width: 860px) {
+    .recognition-body { flex-direction: column; gap: 2.5rem; }
+    .rec-summary { width: 100%; position: static; }
+    .rec-seal { width: 160px; height: 160px; }
+  }
+  .recognition-item {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--white-08);
+  }
+  .recognition-item:last-child { border-bottom: none; }
+  .rec-icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 17px;
+    color: var(--color-purple);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .rec-main { display: flex; flex-direction: column; gap: 4px; }
+  .rec-year {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-purple);
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+    width: 40px;
+    padding-top: 2px;
+  }
+  .rec-title { font-size: 15px; font-weight: 600; color: var(--color-white); line-height: 1.4; }
+  a.rec-link { text-decoration: none; transition: color 0.2s; }
+  a.rec-link:hover { color: var(--color-purple); }
+  .rec-org { font-size: 13px; color: var(--white-55); font-family: var(--font-mono); }
+
+  /* Media Kit section */
+  .media-kit-intro { margin-bottom: 1.25rem; }
+  .media-kit-intro p { color: var(--white-55); font-size: 16px; line-height: 1.75; margin-bottom: 0.5rem; }
+  .media-kit-share-note { font-size: 14px !important; }
+  .share-url { font-family: var(--font-mono); font-size: 13px; background: rgba(132,12,214,0.1); border: 1px solid rgba(132,12,214,0.25); padding: 2px 8px; border-radius: 3px; color: var(--color-purple); }
+
+  /* Bio buttons */
+  .bio-btns { margin-top: 0.75rem; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  /* Outline CTA button — matches media kit style */
+  .btn-outline-cta {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: transparent; color: var(--color-purple);
+    font-family: var(--font-sans); font-size: 15px; font-weight: 700;
+    padding: 12px 24px; border-radius: 4px;
+    border: 1.5px solid rgba(132,12,214,0.4);
+    cursor: pointer; text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-outline-cta:hover { background: rgba(132,12,214,0.1); border-color: var(--color-purple); }
+
+  @media (max-width: 760px) {
+    .story-spine { left: 13px; }
+    .story-phase { margin-bottom: 1.75rem; }
+    .story-card { width: auto; margin: 0 0 0.85rem !important; padding: 1.5rem 1.5rem 1.5rem 2.75rem; }
+    .story-proof-card {
+      position: static;
+      transform: none;
+      width: auto;
+      max-width: none;
+      margin-left: 2.75rem;
+      left: auto; right: auto;
+    }
+    .story-node { left: 13px; top: 1.6rem; width: 11px; height: 11px; }
+    .story-link { display: none; }
+  }
+  @media (max-width: 700px) { .about-photo-frame { width: 240px; } .about-zd-mono { font-size: 70px; bottom: -12px; right: -16px; } }
+  @media (max-width: 650px) {
+    .about-header-inner { flex-direction: column-reverse; }
+    .expertise-grid { grid-template-columns: 1fr; }
+  }
+</style>

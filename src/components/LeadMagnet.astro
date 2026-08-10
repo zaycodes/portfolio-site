@@ -1,0 +1,47 @@
+---
+---
+<section class="lead-magnet" aria-labelledby="lm-heading">
+  <div class="lm-inner">
+    <span class="lm-tag">Free Resource</span>
+    <h2 id="lm-heading" class="lm-title">
+      The <em>AI Documentation Pipeline</em>
+    </h2>
+    <p class="lm-desc">
+      A complete system for automating documentation quality at scale: CI/CD checks, automated linting, style enforcement, and AI-assisted review built into your team's workflow. For senior writers and teams.
+    </p>
+    <form
+      name="ai-doc-pipeline-footer"
+      method="POST"
+      action="/api/subscribe"
+      class="lm-form"
+      aria-label="Download the AI Documentation Pipeline"
+    >
+      <input type="hidden" name="resource" value="ai-doc-pipeline" />
+      <input type="hidden" name="bot-field" />
+      <div class="lm-form-row">
+        <label for="lm-email" class="sr-only">Your email address</label>
+        <input id="lm-email" type="email" name="email" placeholder="your@email.com" required autocomplete="email" class="lm-input" />
+        <button type="submit" class="lm-submit">Download Free →</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .lead-magnet { background: var(--color-dark-2); padding: 1.75rem; padding-top: calc(1.75rem + 52px); padding-bottom: 4rem; clip-path: polygon(0 52px, 100% 0, 100% 100%, 0 100%); margin-top: -2px; text-align: center; }
+  .lm-inner { max-width: 640px; margin: 0 auto; }
+  .lm-tag { display: inline-block; background: var(--purple-10); border: 1px solid var(--purple-22); border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-purple); padding: 5px 14px; margin-bottom: 1.25rem; }
+  .lm-title { color: var(--color-white); font-size: clamp(28px, 5vw, 42px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; line-height: 1.1; }
+  .lm-title em { color: var(--color-purple); font-style: normal; }
+  .lm-desc { color: var(--white-55); font-size: clamp(16px, 2vw, 19px); line-height: 1.8; margin-bottom: 2rem; }
+  .lm-form { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+  .lm-form-row { display: flex; gap: 10px; width: 100%; max-width: 480px; }
+  .lm-input { flex: 1; background: var(--white-08); border: 1px solid var(--white-22); border-radius: var(--radius-sm); padding: 13px 16px; font-family: var(--font-mono); font-size: 14px; color: var(--color-white); outline: none; transition: border-color 0.2s; }
+  .lm-input::placeholder { color: var(--color-grey); }
+  .lm-input:focus { border-color: var(--color-purple); }
+  .lm-submit { background: var(--color-purple); color: #fff; font-family: var(--font-sans); font-size: 15px; font-weight: 700; padding: 13px 22px; border-radius: var(--radius-sm); border: none; cursor: pointer; white-space: nowrap; position: relative; overflow: hidden; transition: opacity 0.2s; }
+  .lm-submit::after { content: ''; position: absolute; top: 0; left: -200%; width: 60%; height: 100%; background: rgba(255,255,255,0.35); transform: skewX(-20deg); transition: left 0.4s ease; }
+  .lm-submit:hover::after { left: 200%; }
+  .lm-submit:hover { opacity: 0.95; }
+  @media (max-width: 480px) { .lm-form-row { flex-direction: column; } .lm-submit { width: 100%; } }
+</style>

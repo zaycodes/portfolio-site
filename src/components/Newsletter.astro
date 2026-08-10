@@ -1,0 +1,25 @@
+---
+const SUBSTACK_URL = 'https://zaycodes.substack.com';
+---
+<div class="newsletter-strip" aria-labelledby="newsletter-heading">
+  <div class="newsletter-inner">
+    <div class="newsletter-text">
+      <h3 id="newsletter-heading" class="newsletter-title">Stay in the loop</h3>
+      <p class="newsletter-sub">I write about documentation, AI workflows, and the future of technical writing. If that sounds interesting to you, subscribe!</p>
+    </div>
+    <a href={SUBSTACK_URL} class="newsletter-btn" target="_blank" rel="noopener noreferrer" aria-label="Subscribe on Substack">
+      Subscribe on Substack →
+    </a>
+  </div>
+</div>
+
+<style>
+  .newsletter-strip { background: var(--color-section); border-top: 1px solid var(--purple-22); border-bottom: 1px solid var(--purple-22); padding: 2rem 1.75rem; }
+  .newsletter-inner { max-width: 1140px; margin: 0 auto; display: flex; align-items: center; gap: 2.5rem; }
+  .newsletter-text { flex: 1; }
+  .newsletter-title { color: var(--color-white); font-size: 22px; font-weight: 700; margin-bottom: 0.5rem; }
+  .newsletter-sub { color: var(--white-55); font-size: 16px; line-height: 1.65; }
+  .newsletter-btn { display: inline-block; background: transparent; border: 2px solid var(--color-purple); color: var(--color-purple); font-family: var(--font-sans); font-size: 15px; font-weight: 700; padding: 13px 24px; border-radius: var(--radius-sm); text-decoration: none; white-space: nowrap; flex-shrink: 0; transition: background 0.2s, color 0.2s; }
+  .newsletter-btn:hover { background: var(--color-purple); color: #fff; }
+  @media (max-width: 600px) { .newsletter-inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; } .newsletter-btn { width: 100%; text-align: center; } }
+</style>

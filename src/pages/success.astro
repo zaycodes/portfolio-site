@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="You're in — Zainab Daodu"
+  description="Your resource is on its way."
+>
+  <Nav />
+
+  <main class="success-page">
+    <div class="container">
+      <div class="success-inner">
+        <div class="success-icon" aria-hidden="true">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h1 class="success-title">You're in.</h1>
+        <p class="success-desc">Check your inbox — your resource is on its way. If you don't see it in the next few minutes, check your spam folder.</p>
+        <a href="#" id="instant-download" class="btn-primary" style="display: none;" download>Download now →</a>
+        <div class="success-links">
+          <a href="/resources" class="btn-primary">Browse more resources</a>
+          <a href="/" class="btn-ghost">Back to home</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  const RESOURCE_FILES: Record<string, string> = {
+    'ai-docs-playbook': '/downloads/ai-docs-playbook.pdf',
+    'ai-doc-pipeline': '/downloads/ai-documentation-pipeline.pdf',
+    'translation-pipeline': '/downloads/ai-translation-pipeline.pdf',
+    'ai-ready-docs-framework': '/downloads/ai-ready-docs-framework.pdf',
+  };
+
+  const resource = new URLSearchParams(window.location.search).get('resource');
+  const file = resource ? RESOURCE_FILES[resource] : null;
+  if (file) {
+    const link = document.getElementById('instant-download') as HTMLAnchorElement | null;
+    if (link) {
+      link.href = file;
+      link.style.display = 'inline-flex';
+    }
+  }
+</script>
+
+<style>
+  .success-page {
+    background: var(--color-black);
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 0;
+    border-bottom: 1px solid var(--purple-22);
+  }
+  .success-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .success-icon {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(132,12,214,0.1);
+    border: 1px solid var(--purple-22);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--color-purple);
+  }
+  .success-title {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 800;
+    color: var(--color-white);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+  .success-desc {
+    font-size: 18px;
+    color: var(--white-55);
+    line-height: 1.75;
+  }
+  .success-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+</style>

@@ -1,0 +1,269 @@
+---
+// MediaKit.astro
+// Opens a modal with copyable bio, tagline, and social handles
+// Shareable via direct URL: /about#media-kit or /speaking#media-kit
+// Replace placeholder text below with your actual content before launch
+
+const SHORT_BIO = `Zainab Daodu is a Senior Technical Writer with over 8 years of experience spanning technical writing, software engineering, and documentation operations. She has worked across API documentation, product documentation, UX writing, and doc ops at enterprise technology companies including Cisco, Tealium, and Google. She is the founder of WriteTech Hub, a global technical writing agency and community with 600+ trained writers. As Open Source Programs Manager at She Code Africa, she founded the Women of Open Source Community Africa (WOSCA) and launched Contributhon, the organisation's flagship open-source contribution bootcamp, raising over $20,000 in sponsorships. She is a Continuous Delivery Foundation Top 10 Contributor, a CDCon keynote speaker, and a regular speaker at international conferences including FOSS Backstage, Open Source Summit, and State of Open CON.`;
+
+const LONG_BIO = `Zainab Daodu is a Senior Technical Writer with over 8 years of experience spanning technical writing, software engineering, and DevOps. She started her career as a software engineer and developer advocate at Interswitch Group, building API gateways, developer portals, and enterprise software, before shifting her focus to making complex technology understandable for the end users.
+
+She has since worked embedded at enterprise technology companies including Cisco, Tealium, Google, and others. Her work covers four disciplines: API and developer documentation, product documentation, UX writing, and documentation operations. She has taken full ownership of high-traffic API surfaces, launched documentation for regulated product areas including consent and privacy, reviewed UI copy as a formal part of product design, and co-built a four-stage AI-assisted documentation pipeline using Claude Code that makes documentation output more reliable and traceable at scale.
+
+Zainab is the founder of WriteTech Hub, a global technical writing agency and community that has trained over 600 writers, many of whom now work at leading technology companies. As Open Source Programs Manager at She Code Africa, she founded the Women of Open Source Community Africa (WOSCA) and launched Contributhon, the organisation's flagship open-source contribution bootcamp, managing the programme entirely from scratch: securing close to $20,000 in sponsorships from partners including CloudBees and the Continuous Delivery Foundation, providing $500 stipends per participant, coordinating with mentoring organisations, and running all aspects of participant selection and support across two cohorts that grew from 16 to over 100 women. She has also contributed to open source documentation for Jenkins and the Wikimedia Foundation.
+
+A recognised voice in technical writing, developer experience, and open source, she has delivered over 15 international talks since 2019, including a keynote at CDCon and sessions at FOSS Backstage, Open Source Summit, State of Open CON, and GOV.UK Design System Day. She holds an MSc in Project Management with Distinction from Teesside University and is recognised among the Continuous Delivery Foundation's Top 10 contributors shaping the future of Continuous Delivery and DevOps.`;
+
+const TAGLINE = `Senior Technical Writer · API Documentation · Doc Ops · UX Writing · Open Source`;
+
+const SOCIAL_HANDLES = [
+  { platform: 'LinkedIn',  handle: 'linkedin.com/in/zaycodes',  url: 'https://www.linkedin.com/in/zaycodes/' },
+  { platform: 'X (Twitter)', handle: '@Zayc0des',              url: 'https://twitter.com/Zayc0des' },
+  { platform: 'GitHub',    handle: 'github.com/zaycodes',       url: 'https://github.com/zaycodes' },
+  { platform: 'Substack',  handle: 'zaycodes.substack.com',     url: 'https://zaycodes.substack.com' },
+  { platform: 'Website',   handle: 'zaycodes.com',              url: 'https://zaycodes.com' },
+];
+---
+
+<!-- Trigger button -->
+<button class="mk-trigger" id="media-kit-trigger" aria-label="Open media kit">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+  </svg>
+  Media Kit
+</button>
+
+<!-- Anchor for shareable link -->
+<div id="media-kit" aria-hidden="true"></div>
+
+<!-- Modal -->
+<div class="mk-overlay" id="media-kit-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="mk-title">
+  <div class="mk-panel">
+    <div class="mk-header">
+      <div class="mk-header-text">
+        <h2 id="mk-title" class="mk-title">Media Kit</h2>
+        <p class="mk-subtitle">Copy the content you need or download assets below</p>
+      </div>
+      <button class="mk-close" id="media-kit-close" aria-label="Close media kit">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="mk-body">
+
+      <!-- Tagline -->
+      <div class="mk-section">
+        <div class="mk-section-header">
+          <h3 class="mk-section-label">Tagline</h3>
+          <button class="copy-btn" data-copy={TAGLINE} aria-label="Copy tagline">Copy</button>
+        </div>
+        <p class="mk-content mk-single">{TAGLINE}</p>
+      </div>
+
+      <!-- Short bio -->
+      <div class="mk-section">
+        <div class="mk-section-header">
+          <h3 class="mk-section-label">Short Bio</h3>
+          <button class="copy-btn" data-copy={SHORT_BIO} aria-label="Copy short bio">Copy</button>
+        </div>
+        <p class="mk-content">{SHORT_BIO}</p>
+      </div>
+
+      <!-- Long bio -->
+      <div class="mk-section">
+        <div class="mk-section-header">
+          <h3 class="mk-section-label">Full Bio</h3>
+          <button class="copy-btn" data-copy={LONG_BIO} aria-label="Copy full bio">Copy</button>
+        </div>
+        <div class="mk-content mk-long">{LONG_BIO}</div>
+      </div>
+
+      <!-- Social handles -->
+      <div class="mk-section">
+        <h3 class="mk-section-label" style="margin-bottom:0.75rem">Social Handles</h3>
+        <div class="mk-handles">
+          {SOCIAL_HANDLES.map(h => (
+            <div class="mk-handle-row">
+              <div class="mk-handle-info">
+                <span class="mk-platform">{h.platform}</span>
+                <a href={h.url} class="mk-handle-link" target="_blank" rel="noopener noreferrer">{h.handle}</a>
+              </div>
+              <button class="copy-btn copy-btn-sm" data-copy={h.handle} aria-label={`Copy ${h.platform} handle`}>Copy</button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Downloads -->
+      <div class="mk-section mk-downloads">
+        <h3 class="mk-section-label" style="margin-bottom:0.75rem">Downloads</h3>
+        <div class="mk-dl-row">
+          <a href="/images/zainab-daodu.jpg" class="mk-dl-btn" download>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Headshot (JPG)
+          </a>
+          <a href="/media-kit.pdf" class="mk-dl-btn" download>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Full Media Kit (PDF)
+          </a>
+        </div>
+        <p class="mk-contact-note">Need something specific? <a href="mailto:hello@zaycodes.com">Get in touch</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Trigger */
+  .mk-trigger {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: transparent; color: var(--color-purple);
+    font-family: var(--font-sans); font-size: 15px; font-weight: 700;
+    padding: 14px 28px; border-radius: 4px;
+    border: 1.5px solid rgba(132,12,214,0.4);
+    cursor: pointer; transition: border-color 0.2s;
+  }
+  .mk-trigger:hover { background: transparent; border-color: rgba(132,12,214,0.7); }
+
+  /* Overlay */
+  .mk-overlay {
+    position: fixed; inset: 0;
+    background: var(--overlay-scrim);
+    z-index: 600; display: flex; align-items: center; justify-content: center;
+    padding: 1.25rem; opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .mk-overlay.open { opacity: 1; pointer-events: all; }
+
+  /* Panel */
+  .mk-panel {
+    background: var(--color-card); border: 1px solid rgba(132,12,214,0.25); border-radius: 10px;
+    max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto;
+    transform: translateY(22px); transition: transform 0.25s ease;
+    scrollbar-width: thin; scrollbar-color: rgba(132,12,214,0.3) transparent;
+  }
+  .mk-overlay.open .mk-panel { transform: translateY(0); }
+
+  /* Header */
+  .mk-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 1.5rem 1.75rem 1.25rem;
+    border-bottom: 1px solid var(--white-08);
+    position: sticky; top: 0; background: var(--color-card); z-index: 1;
+  }
+  .mk-title { font-size: 22px; font-weight: 800; color: var(--color-white); letter-spacing: -0.02em; margin-bottom: 3px; }
+  .mk-subtitle { font-size: 13px; color: var(--white-55); }
+  .mk-close {
+    background: transparent; border: 1px solid var(--white-08);
+    border-radius: 4px; color: var(--color-grey); cursor: pointer;
+    padding: 7px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: border-color 0.2s, color 0.2s;
+  }
+  .mk-close:hover { border-color: var(--color-purple); color: var(--color-purple); }
+
+  /* Body */
+  .mk-body { padding: 1.5rem 1.75rem 2rem; display: flex; flex-direction: column; gap: 1.75rem; }
+
+  .mk-section { display: flex; flex-direction: column; gap: 0; }
+  .mk-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(132,12,214,0.2); }
+  .mk-section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-purple); }
+  .mk-content { font-size: 14px; color: var(--white-55); line-height: 1.8; }
+  .mk-single { font-family: var(--font-mono); font-size: 13px; }
+  .mk-long { white-space: pre-line; }
+
+  /* Copy buttons */
+  .copy-btn {
+    background: rgba(132,12,214,0.1); color: var(--color-purple);
+    font-family: var(--font-sans); font-size: 11px; font-weight: 700;
+    padding: 5px 12px; border-radius: 100px; border: 1px solid rgba(132,12,214,0.3);
+    cursor: pointer; transition: background 0.2s, color 0.2s; white-space: nowrap;
+    letter-spacing: 0.04em;
+  }
+  .copy-btn:hover { background: var(--color-purple); color: #fff; }
+  .copy-btn.copied { background: rgba(14,168,118,0.15); color: #15B889; border-color: rgba(14,168,118,0.3); }
+  :global(html[data-theme="light"]) .copy-btn.copied { color: #0B7A56; }
+  .copy-btn-sm { font-size: 10px; padding: 4px 10px; }
+
+  /* Social handles */
+  .mk-handles { display: flex; flex-direction: column; gap: 0; }
+  .mk-handle-row { display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0; border-bottom: 1px solid var(--white-08); }
+  .mk-handle-row:last-child { border-bottom: none; }
+  .mk-handle-info { display: flex; flex-direction: column; gap: 2px; }
+  .mk-platform { font-size: 11px; font-weight: 700; color: var(--color-grey); letter-spacing: 0.04em; text-transform: uppercase; }
+  .mk-handle-link { font-family: var(--font-mono); font-size: 13px; color: var(--color-white); text-decoration: none; transition: color 0.2s; }
+  .mk-handle-link:hover { color: var(--color-purple); }
+
+  /* Downloads */
+  .mk-dl-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 0.85rem; }
+  .mk-dl-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-sans); font-size: 13px; font-weight: 700;
+    color: var(--color-white); text-decoration: none;
+    padding: 10px 18px; border-radius: 4px;
+    border: 1px solid var(--white-22);
+    background: var(--white-08);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .mk-dl-btn:hover { background: var(--white-22); border-color: var(--white-30); }
+  .mk-contact-note { font-size: 13px; color: var(--color-grey); font-family: var(--font-mono); }
+  .mk-contact-note a { color: var(--color-purple); text-decoration: none; }
+  .mk-contact-note a:hover { text-decoration: underline; }
+</style>
+
+<script>
+  const trigger = document.getElementById('media-kit-trigger');
+  const overlay = document.getElementById('media-kit-modal') as HTMLElement;
+  const closeBtn = document.getElementById('media-kit-close');
+
+  function openMK() {
+    if (!overlay) return;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    // Update URL for shareability
+    if (window.location.hash !== '#media-kit') {
+      history.pushState({}, '', '#media-kit');
+    }
+    setTimeout(() => closeBtn?.focus(), 50);
+  }
+
+  function closeMK() {
+    if (!overlay) return;
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    history.pushState({}, '', window.location.pathname);
+  }
+
+  trigger?.addEventListener('click', openMK);
+  closeBtn?.addEventListener('click', closeMK);
+  overlay?.addEventListener('click', (e) => { if (e.target === overlay) closeMK(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMK(); });
+
+  // Open on page load if URL hash is #media-kit
+  if (window.location.hash === '#media-kit') {
+    setTimeout(openMK, 300);
+  }
+
+  // Copy to clipboard
+  document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const text = btn.dataset.copy || '';
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      } catch {
+        btn.textContent = 'Error';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+      }
+    });
+  });
+</script>

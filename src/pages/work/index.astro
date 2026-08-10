@@ -1,0 +1,72 @@
+---
+// work/index.astro — Full work page with all case studies
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import WorkGrid from '../../components/WorkGrid.astro';
+import CtaStrip from '../../components/CtaStrip.astro';
+import CtaLeadBlock from '../../components/CtaLeadBlock.astro';
+import Footer from '../../components/Footer.astro';
+import Newsletter from '../../components/Newsletter.astro';
+---
+
+<BaseLayout
+  title="Work — Zainab Daodu"
+  description="Case studies in API documentation, product docs, UX writing, and documentation operations. 8+ years of work across Cisco, Tealium, Google, and the open source community."
+>
+  <Nav />
+
+  <header class="page-header">
+    <img src="/images/zainab-workspace-2.png" alt="" class="header-bg-img" loading="eager" aria-hidden="true" />
+    <div class="header-overlay" aria-hidden="true"></div>
+    <div class="container header-body">
+      <p class="page-eyebrow">Work</p>
+      <h1 class="page-title">Selected Work</h1>
+      <p class="page-desc">Case studies across API documentation, product docs, UX writing, and documentation operations. All work is real. All metrics are from shipped products.</p>
+      <div class="work-header-stats">
+        <div class="wstat"><span class="wstat-n">12</span><span class="wstat-l">case studies</span></div>
+        <div class="wstat"><span class="wstat-n">4</span><span class="wstat-l">disciplines</span></div>
+        <div class="wstat"><span class="wstat-n">6+</span><span class="wstat-l">companies</span></div>
+        <div class="wstat"><span class="wstat-n">8+</span><span class="wstat-l">years experience</span></div>
+      </div>
+    </div>
+  </header>
+
+  <CtaStrip message="Looking for a specific type of documentation work?" />
+
+  <!-- Full work grid, no limit, with filters -->
+  <WorkGrid showFilters={true} showViewAll={false} />
+
+  <CtaLeadBlock />
+  <Newsletter />
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-header {
+    position: relative; overflow: hidden;
+    min-height: 220px;
+    display: flex; align-items: flex-end;
+    border-bottom: 1px solid var(--purple-22);
+  }
+  .header-bg-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 35%;
+    display: block;
+  }
+  .header-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.72) 50%, rgba(0,0,0,0.4) 100%);
+  }
+  :global(html[data-theme="light"]) .header-overlay {
+    background: linear-gradient(to top, rgba(242,238,248,0.94) 0%, rgba(242,238,248,0.75) 50%, rgba(242,238,248,0.35) 100%);
+  }
+  .header-body { position: relative; z-index: 1; padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  .page-eyebrow { font-family: var(--font-mono); font-size: 12px; color: var(--color-purple); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .page-title { font-size: clamp(36px, 6vw, 58px); font-weight: 800; color: var(--color-white); letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 0.85rem; }
+  .page-desc { color: var(--white-55); font-size: 18px; line-height: 1.75; max-width: 520px; margin-bottom: 0; }
+  .work-header-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; margin-top: 2rem; }
+  .wstat { display: flex; flex-direction: column; gap: 2px; }
+  .wstat-n { font-family: var(--font-mono); font-size: 32px; font-weight: 500; color: var(--color-purple); line-height: 1; letter-spacing: -0.02em; }
+  .wstat-l { font-size: 13px; color: var(--white-55); text-transform: uppercase; letter-spacing: 0.06em; }
+</style>

@@ -1,0 +1,576 @@
+---
+const cards = [
+  {
+    id: 'writetechhub',
+    num: '01',
+    name: 'WriteTech Hub',
+    role: 'Founder · July 2022 – Present',
+    logoSrc: '/images/logos/writetechhub.png',
+    logoFallback: 'WT',
+    logoBg: 'white',
+    desc: 'Global technical writing agency and community. Free virtual bootcamp with 65 graduates across four cohorts, many now at leading technology companies.',
+    stats: ['600+ writers mentored', '65+ graduates', '4 cohorts', 'Agency services'],
+    bullets: [
+      '4 cohorts, 126 participants, 65 graduates across structured 4-week training programmes',
+      'Curriculum covers API documentation, information architecture, open source contribution, audience analysis, and career development',
+      '10+ industry professionals hosted weekly live sessions per cohort',
+      'Secured sponsorships from TalentPoel, Beacamp, WiiCreate, and Puplar; awarded cash prizes up to $300 and mentorship to top performers',
+      'Full technical writing agency offering documentation review, mentorship, and consulting services',
+    ],
+  },
+  {
+    id: 'sca',
+    num: '02',
+    name: 'She Code Africa',
+    role: 'Open Source Programs Manager · Volunteer · Apr 2020 – Aug 2023',
+    logoSrc: '/images/logos/she-code-africa.png',
+    logoFallback: 'SCA',
+    logoBg: 'white',
+    desc: "Founded the Women of Open Source Community Africa (WOSCA) and launched Contributhon, the organisation's flagship open-source contribution bootcamp, scaling it from 16 to 100+ women.",
+    stats: ['500+ women empowered', '100+ bootcamp participants', '~$20K raised', 'SCA Summit sponsor'],
+    bullets: [
+      'Founded the Women of Open Source Community Africa (WOSCA) to create structured pathways for women to contribute to open source through mentorship and real-world projects',
+      "Launched and scaled Contributhon, SCA's flagship open-source contribution bootcamp: grew from 16 to 100+ women across two cohorts in 2021 and 2022",
+      'Managed the programme entirely — from securing partnerships and coordinating with mentoring organisations to running participant selection and supporting mentees throughout',
+      'Raised over $20,000 in sponsorships from CloudBees, Continuous Delivery Foundation, The @ Company, and DeployHub, providing $500 stipends per participant',
+      'Partner communities: Jenkins, Layer5, Moja Global, The @ Company, and DeployHub',
+      "Led SCA HackFest 2022 and organised and sponsored SCA Summit 2022 and 2024, Africa's largest gathering of women in tech",
+    ],
+  },
+  {
+    id: 'jenkins',
+    num: '03',
+    name: 'Jenkins · Open Source',
+    role: 'Technical Writer & Community Contributor · Aug 2020 – Oct 2024',
+    logoSrc: '/images/logos/jenkins.svg',
+    logoFallback: 'JNK',
+    logoBg: '',
+    desc: "Brought Jenkins into Contributhon as a partner community, creating structured pathways for African women to contribute. Delivered the Google Season of Docs project and keynoted CDCon 2020.",
+    stats: ['Community partner', 'CDCon keynote', '4+ years open source', 'GSOD contributor'],
+    bullets: [
+      'Brought Jenkins into SCA Contributhon as a partner organisation, creating structured open-source pathways for African women to contribute to Jenkins',
+      'Planned and led community programmes encouraging African women to contribute to Jenkins and other open-source projects',
+      'Delivered the Google Season of Docs (GSOD) project: authored the first official Jenkins on Kubernetes installation and scaling guides',
+      'Additional documentation: Windows installation guides, troubleshooting section, Jenkins on AWS tutorial',
+      'Contributed to the migration of Jenkins documentation from the legacy Wiki to GitHub',
+      'Recognised as CDCon 2020 keynote speaker by the Continuous Delivery Foundation',
+    ],
+  },
+];
+---
+
+<section class="leadership" aria-labelledby="leadership-heading">
+
+  <!-- Decorative background shapes -->
+  <span class="deco deco-ring-lg" aria-hidden="true"></span>
+  <span class="deco deco-ring-sm" aria-hidden="true"></span>
+  <span class="deco deco-diamond" aria-hidden="true"></span>
+  <span class="deco deco-diamond-2" aria-hidden="true"></span>
+  <span class="deco deco-dots" aria-hidden="true"></span>
+
+  <div class="ldr-inner">
+
+    <div class="ldr-head scroll-fade">
+      <div class="ldr-label-row">
+        <span class="ldr-bar" aria-hidden="true"></span>
+        <p class="ldr-eyebrow">Leadership &amp; Community</p>
+        <span class="ldr-rule" aria-hidden="true"></span>
+      </div>
+      <h2 id="leadership-heading" class="ldr-headline">
+        Growing the craft, one writer at a time.
+      </h2>
+      <p class="ldr-sub">Some of my most meaningful work happens outside client projects. Whether it's mentoring aspiring technical writers, growing communities, or sharing what I've learned, I'm just as passionate about helping people grow as I am about documenting products.</p>
+    </div>
+
+    <div class="ldr-list">
+      {cards.map(card => (
+        <div class="ldr-row scroll-fade">
+          <span class="ldr-ghost" aria-hidden="true">{card.num}</span>
+
+          <div class="ldr-left">
+            <span class="ldr-num" aria-hidden="true">{card.num}</span>
+            <div class="ldr-logo-box" style={card.logoBg ? `background:${card.logoBg};` : ''}>
+              {card.logoSrc ? (
+                <>
+                  <img
+                    src={card.logoSrc}
+                    alt={`${card.name} logo`}
+                    class="ldr-logo-img"
+                    loading="lazy"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+                  />
+                  <span class="ldr-logo-fb" style="display:none">{card.logoFallback}</span>
+                </>
+              ) : (
+                <span class="ldr-logo-fb">{card.logoFallback}</span>
+              )}
+            </div>
+            <h3 class="ldr-org">{card.name}</h3>
+            <p class="ldr-role">{card.role}</p>
+          </div>
+
+          <div class="ldr-right">
+            <p class="ldr-desc">{card.desc}</p>
+            <p class="ldr-stats">{card.stats.join(' · ')}</p>
+            <button class="ldr-btn" data-id={card.id} aria-label={`View details for ${card.name}`}>
+              View full story →
+            </button>
+          </div>
+
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<!-- Detail modal -->
+<div class="lc-overlay" id="lc-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="lc-modal-name">
+  <div class="lc-panel">
+    <div class="lc-header">
+      <div>
+        <p class="lc-name" id="lc-modal-name"></p>
+        <p class="lc-role" id="lc-modal-role"></p>
+      </div>
+      <button class="lc-close" id="lc-close" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <ul class="lc-list" id="lc-list"></ul>
+  </div>
+</div>
+
+<style>
+  /* ── Section ── */
+  .leadership {
+    background-color: var(--surface-plum);
+    background-image: url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1.1' fill='rgba(132%2C12%2C214%2C0.14)'/%3E%3C/svg%3E");
+    background-size: 28px 28px;
+    padding: 1.75rem;
+    padding-top: calc(5.5rem + 52px);
+    padding-bottom: calc(5.5rem + 52px);
+    clip-path: polygon(0 0, 100% 52px, 100% calc(100% - 52px), 0 100%);
+    margin-top: -2px;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  /* Soft radial wash — keeps centre bright */
+  .leadership::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 55% 55% at 50% 50%, var(--surface-plum) 25%, transparent 100%),
+      radial-gradient(ellipse 35% 45% at 90% 15%, rgba(132,12,214,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 40% at 10% 85%, rgba(132,12,214,0.08) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ldr-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Decorative shapes ── */
+  .deco { position: absolute; pointer-events: none; z-index: 0; }
+
+  /* Large outer ring — top right */
+  .deco-ring-lg {
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    border: 1px solid rgba(132,12,214,0.18);
+    top: -140px; right: -120px;
+  }
+  .deco-ring-lg::after {
+    content: '';
+    position: absolute;
+    inset: 60px;
+    border-radius: 50%;
+    border: 1px solid rgba(132,12,214,0.12);
+  }
+
+  /* Smaller ring — bottom left */
+  .deco-ring-sm {
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    border: 1px solid rgba(132,12,214,0.15);
+    bottom: 60px; left: -70px;
+  }
+
+  /* Diamond 1 — mid right */
+  .deco-diamond {
+    width: 32px; height: 32px;
+    border: 1.5px solid rgba(132,12,214,0.3);
+    transform: rotate(45deg);
+    top: 30%; right: 8%;
+  }
+
+  /* Diamond 2 — upper left area */
+  .deco-diamond-2 {
+    width: 18px; height: 18px;
+    border: 1.5px solid rgba(132,12,214,0.24);
+    transform: rotate(45deg);
+    top: 18%; left: 5%;
+  }
+
+  /* Dot cluster — bottom right quadrant */
+  .deco-dots {
+    width: 64px; height: 64px;
+    background-image: radial-gradient(circle, rgba(132,12,214,0.28) 1.5px, transparent 1.5px);
+    background-size: 16px 16px;
+    bottom: 22%; right: 18%;
+  }
+
+  /* ── Section header ── */
+  .ldr-head { margin-bottom: 4.5rem; }
+
+  .ldr-label-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+  }
+
+  .ldr-bar {
+    display: block;
+    width: 3px;
+    height: 16px;
+    background: var(--color-purple);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .ldr-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-purple);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .ldr-rule {
+    flex: 1;
+    height: 1px;
+    background: rgba(132,12,214,0.18);
+  }
+
+  .ldr-headline {
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--color-white);
+    margin-bottom: 1.1rem;
+  }
+  .ldr-headline em { color: var(--color-purple); font-style: normal; }
+
+  .ldr-sub {
+    font-size: 16px;
+    color: var(--white-55);
+    line-height: 1.8;
+    max-width: 580px;
+  }
+
+  /* ── List ── */
+  .ldr-list { display: flex; flex-direction: column; }
+
+  /* ── Row ── */
+  .ldr-row {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 5rem;
+    padding: 3.5rem 0;
+    border-top: 1px solid rgba(132,12,214,0.14);
+    position: relative;
+    overflow: hidden;
+  }
+  .ldr-list .ldr-row:last-child { border-bottom: 1px solid rgba(132,12,214,0.14); }
+
+  /* Ghost step number behind each row */
+  .ldr-ghost {
+    position: absolute;
+    right: -0.05em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-sans);
+    font-size: 180px;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+  :global(html[data-theme="light"]) .ldr-ghost { color: rgba(23,11,36,0.05); }
+
+  /* ── Left column ── */
+  .ldr-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ldr-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(191,127,255,0.7);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  :global(html[data-theme="light"]) .ldr-num { color: #7A1FC4; }
+
+  .ldr-logo-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--white-08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: 0.25rem;
+  }
+
+  .ldr-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .ldr-logo-fb {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--white-55);
+    font-family: var(--font-sans);
+    letter-spacing: 0.04em;
+    background: rgba(132,12,214,0.08);
+  }
+
+  .ldr-org {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--color-white);
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin-top: 0.25rem;
+  }
+
+  .ldr-role {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--white-55);
+    line-height: 1.65;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── Right column ── */
+  .ldr-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ldr-desc {
+    font-size: 15px;
+    color: var(--white-55);
+    line-height: 1.85;
+  }
+
+  .ldr-stats {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-white);
+    letter-spacing: 0.02em;
+    line-height: 1.7;
+  }
+
+  .ldr-btn {
+    align-self: flex-start;
+    background: none;
+    border: 1px solid rgba(132,12,214,0.25);
+    border-radius: 6px;
+    color: var(--white-55);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .ldr-btn:hover {
+    border-color: var(--color-purple);
+    color: var(--color-purple);
+    background: rgba(132,12,214,0.05);
+  }
+
+  /* ── Modal ── */
+  .lc-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-scrim);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    backdrop-filter: blur(4px);
+  }
+  .lc-overlay.open { opacity: 1; pointer-events: all; }
+
+  .lc-panel {
+    background: var(--color-card);
+    border: 1px solid rgba(132,12,214,0.25);
+    border-radius: 12px;
+    max-width: 560px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.25s ease;
+    padding: 1.75rem 2rem 2.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(132,12,214,0.3) transparent;
+  }
+  .lc-overlay.open .lc-panel { transform: translateY(0); }
+
+  .lc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--white-08);
+  }
+  .lc-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-white);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .lc-role {
+    font-size: 11px;
+    color: var(--white-30);
+    font-family: var(--font-mono);
+  }
+  .lc-close {
+    background: transparent;
+    border: 1px solid var(--white-22);
+    border-radius: 6px;
+    color: var(--white-30);
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .lc-close:hover { border-color: var(--color-purple); color: var(--color-purple); }
+
+  .lc-list { list-style: none; display: flex; flex-direction: column; }
+  :global(.lc-list li) {
+    font-size: 15px;
+    color: var(--white-55);
+    line-height: 1.75;
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    position: relative;
+    border-bottom: 1px solid var(--white-08);
+  }
+  :global(.lc-list li:last-child) { border-bottom: none; padding-bottom: 0; }
+  :global(.lc-list li::before) {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--color-purple);
+    font-size: 12px;
+    top: 0.8rem;
+    font-family: var(--font-mono);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 860px) {
+    .ldr-row { grid-template-columns: 200px 1fr; gap: 3rem; }
+    .ldr-ghost { font-size: 120px; }
+  }
+  @media (max-width: 640px) {
+    .leadership {
+      clip-path: polygon(0 0, 100% 36px, 100% calc(100% - 36px), 0 100%);
+      padding-top: calc(4rem + 36px);
+      padding-bottom: calc(4rem + 36px);
+    }
+    .ldr-row {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 2.5rem 0;
+    }
+    .ldr-ghost { font-size: 80px; }
+    .ldr-head { margin-bottom: 3rem; }
+    .deco-ring-lg { width: 240px; height: 240px; top: -80px; right: -80px; }
+    .deco-ring-sm { display: none; }
+    .deco-diamond-2 { display: none; }
+  }
+</style>
+
+<script is:inline define:vars={{ cards }}>
+  const overlay = document.getElementById('lc-modal');
+  const closeBtn = document.getElementById('lc-close');
+
+  function openModal(id) {
+    const card = cards.find(c => c.id === id);
+    if (!card || !overlay) return;
+    document.getElementById('lc-modal-name').textContent = card.name;
+    document.getElementById('lc-modal-role').textContent = card.role;
+    const list = document.getElementById('lc-list');
+    list.innerHTML = '';
+    card.bullets.forEach(b => {
+      const li = document.createElement('li');
+      li.textContent = b;
+      list.appendChild(li);
+    });
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => closeBtn?.focus(), 50);
+  }
+
+  function closeModal() {
+    overlay?.classList.remove('open');
+    overlay?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.ldr-btn').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn.dataset.id));
+  });
+  closeBtn?.addEventListener('click', closeModal);
+  overlay?.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>

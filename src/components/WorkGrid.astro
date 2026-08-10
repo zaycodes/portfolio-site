@@ -1,0 +1,708 @@
+---
+// WorkGrid.astro — Work grid with modal case study viewer
+
+import WorkCard from './WorkCard.astro';
+import { workItems } from '../data/work';
+
+interface Props {
+  limit?: number;
+  showFilters?: boolean;
+  showViewAll?: boolean;
+  featuredOnly?: boolean;
+}
+
+const { limit, showFilters = true, showViewAll = true, featuredOnly = false } = Astro.props;
+const displayItems = featuredOnly
+  ? workItems.filter(w => w.featured)
+  : limit ? workItems.slice(0, limit) : workItems;
+
+const filterButtons = [
+  { value: 'all',     label: 'All' },
+  { value: 'api',     label: 'API & Dev Docs' },
+  { value: 'product', label: 'Product Docs' },
+  { value: 'ux',      label: 'UX Writing' },
+  { value: 'ops',     label: 'Doc Ops' },
+];
+
+// Badge CSS class map for the modal
+const badgeClasses: Record<string, string> = {
+  api:     'badge-api',
+  product: 'badge-product',
+  ux:      'badge-ux',
+  ops:     'badge-ops',
+};
+---
+
+<section class="work-section" aria-labelledby="work-section-heading">
+  <div class="work-inner">
+    <div class="section-header">
+      <h2 id="work-section-heading" class="section-tag">Selected Works</h2>
+      <div class="section-rule"></div>
+      {showFilters && <span class="work-hint" aria-hidden="true">Click any card to view case study</span>}
+    </div>
+
+    {showFilters && (
+      <div class="filter-row" role="group" aria-label="Filter work by type">
+        {filterButtons.map(btn => (
+          <button
+            class:list={['filter-btn', { active: btn.value === 'all' }]}
+            data-filter={btn.value}
+            aria-pressed={btn.value === 'all' ? 'true' : 'false'}
+          >
+            {btn.label}
+          </button>
+        ))}
+      </div>
+    )}
+
+    <div class="work-grid" id="work-grid">
+      {displayItems.map(item => (
+        <WorkCard item={item} />
+      ))}
+    </div>
+
+    {showViewAll && (
+      <div class="work-view-all">
+        <a href="/work" class="view-all-btn">View All Work →</a>
+      </div>
+    )}
+  </div>
+</section>
+
+<!-- Modal overlay -->
+<div class="modal-overlay" id="work-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-title">
+  <div class="modal-panel">
+    <div class="modal-header">
+      <div class="modal-meta">
+        <span class="modal-company" id="modal-company"></span>
+        <span class="modal-badge" id="modal-badge"></span>
+      </div>
+      <div class="modal-header-actions">
+        <a class="modal-link modal-link--secondary" id="modal-link-secondary" href="#" target="_blank" rel="noopener noreferrer">
+          <span id="modal-link-secondary-label">View initiative</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+          </svg>
+        </a>
+        <a class="modal-link" id="modal-link" href="#" target="_blank" rel="noopener noreferrer">
+          <span id="modal-link-label">View documentation</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+          </svg>
+        </a>
+        <button class="modal-close" id="modal-close" aria-label="Close case study">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <img class="modal-cover-img hidden" id="modal-cover-img" alt="" loading="lazy" />
+      <h2 class="modal-title" id="modal-title"></h2>
+      <p class="modal-overview" id="modal-overview"></p>
+
+      <div class="modal-section" id="modal-work-section">
+        <h3 class="modal-section-label">What I did</h3>
+        <ul class="modal-list" id="modal-work-list"></ul>
+      </div>
+
+      <div class="modal-section" id="modal-outcome-section">
+        <h3 class="modal-section-label">Outcome</h3>
+        <p class="modal-outcome" id="modal-outcome"></p>
+      </div>
+
+      <div class="modal-tags-row">
+        <h3 class="modal-section-label">Tools & technologies</h3>
+        <div class="modal-tags" id="modal-tags"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .work-section {
+    background: var(--surface-void);
+    padding: 1.75rem;
+    padding-top: calc(5rem + 52px);
+    padding-bottom: 5rem;
+    clip-path: polygon(0 52px, 100% 0, 100% calc(100% - 52px), 0 100%);
+    margin-top: -2px;
+  }
+
+  .work-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-tag {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-purple);
+    white-space: nowrap;
+  }
+
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--white-08);
+  }
+
+  .work-hint {
+    font-size: 12px;
+    color: var(--white-30);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+
+  .filter-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-btn {
+    background: transparent;
+    color: var(--white-30);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--white-08);
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: all 0.2s ease;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--color-purple);
+    color: var(--color-purple);
+  }
+
+  .filter-btn.active {
+    background: var(--color-purple);
+    color: #fff;
+    border-color: var(--color-purple);
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  /* Card entrance animation */
+  .work-grid :global(.work-card) {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+
+  .work-grid.animated :global(.work-card) { opacity: 1; transform: translateY(0); }
+  .work-grid.animated :global(.work-card:nth-child(1)) { transition-delay: 0s; }
+  .work-grid.animated :global(.work-card:nth-child(2)) { transition-delay: 0.07s; }
+  .work-grid.animated :global(.work-card:nth-child(3)) { transition-delay: 0.14s; }
+  .work-grid.animated :global(.work-card:nth-child(4)) { transition-delay: 0.21s; }
+  .work-grid.animated :global(.work-card:nth-child(5)) { transition-delay: 0.28s; }
+  .work-grid.animated :global(.work-card:nth-child(6)) { transition-delay: 0.35s; }
+  .work-grid.animated :global(.work-card:nth-child(7)) { transition-delay: 0.42s; }
+  .work-grid.animated :global(.work-card:nth-child(8)) { transition-delay: 0.49s; }
+  .work-grid.animated :global(.work-card:nth-child(9)) { transition-delay: 0.56s; }
+
+  .work-grid :global(.work-card.hidden) {
+    display: none;
+  }
+
+  .work-view-all {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .view-all-btn {
+    display: inline-block;
+    color: var(--color-purple);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--purple-35);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .view-all-btn:hover {
+    border-color: var(--color-purple);
+    background: var(--purple-05);
+  }
+
+  /* ─── MODAL ──────────────────────────────────── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-scrim);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal-panel {
+    background: var(--color-card);
+    border: 1px solid rgba(132, 12, 214, 0.25);
+    border-radius: 10px;
+    max-width: 680px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transform: translateY(22px);
+    transition: transform 0.25s ease;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(132, 12, 214, 0.3) transparent;
+  }
+
+  .modal-overlay.open .modal-panel {
+    transform: translateY(0);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    padding: 1.25rem 1.5rem 0;
+    position: sticky;
+    top: 0;
+    background: var(--color-card);
+    z-index: 1;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--white-08);
+  }
+
+  .modal-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .modal-company {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-grey);
+  }
+
+  .modal-badge {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 3px 0;
+    text-transform: uppercase;
+  }
+
+  .modal-badge.badge-api { color: #bf7fff; }
+  .modal-badge.badge-product { color: #15B889; }
+  .modal-badge.badge-ux { color: #c8c840; }
+  .modal-badge.badge-ops { color: var(--white-55); }
+
+  /* The dark theme's badge colors are light, high-key tints tuned to sit on
+     near-black cards. On a white modal panel they read as washed out, so
+     each gets a deeper, more saturated counterpart for contrast. */
+  :global(html[data-theme="light"]) .modal-badge.badge-api { color: #7A1FC4; }
+  :global(html[data-theme="light"]) .modal-badge.badge-product { color: #0B7A56; }
+  :global(html[data-theme="light"]) .modal-badge.badge-ux { color: #8A8A1F; }
+
+  .modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+
+  .modal-close {
+    background: transparent;
+    border: 1px solid var(--white-08);
+    border-radius: 4px;
+    color: var(--color-grey);
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover {
+    border-color: var(--color-purple);
+    color: var(--color-purple);
+  }
+
+  .modal-body {
+    padding: 1.75rem 1.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    min-width: 0;
+  }
+
+  /* Every direct flex child gets min-width: 0 so none of them can force
+     the panel wider than its own box — the actual cause of the cropped/
+     scrolled modal (an oversized image or long unbroken text refusing
+     to shrink below its natural size). */
+  .modal-body > * {
+    min-width: 0;
+  }
+
+  /* Full, untruncated cover image — natural aspect ratio, no cropping.
+     min-width: 0 stops a flex item from refusing to shrink below its
+     intrinsic (natural pixel) size, which is what was cropping large
+     source screenshots instead of scaling them down. */
+  .modal-cover-img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-width: 0;
+    display: block;
+    border-radius: 8px;
+    border: 1px solid var(--white-08);
+  }
+
+  .modal-cover-img.hidden {
+    display: none;
+  }
+
+  .modal-title {
+    font-size: clamp(20px, 2.5vw, 26px);
+    font-weight: 700;
+    color: var(--color-white);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  .modal-overview {
+    font-size: 16px;
+    color: var(--white-55);
+    line-height: 1.85;
+    margin-top: -0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--white-08);
+    overflow-wrap: break-word;
+  }
+
+  .modal-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .modal-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-purple);
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(132, 12, 214, 0.2);
+  }
+
+  :global(.modal-list) {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  :global(.modal-list li) {
+    font-size: 15px;
+    color: var(--white-55);
+    line-height: 1.72;
+    padding: 0.65rem 0 0.65rem 1.5rem;
+    position: relative;
+    border-bottom: 1px solid var(--white-08);
+    overflow-wrap: break-word;
+  }
+
+  :global(.modal-list li:last-child) {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  :global(.modal-list li::before) {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #840CD6;
+    font-size: 12px;
+    top: 0.7rem;
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  .modal-outcome {
+    font-size: 15px;
+    color: var(--white-55);
+    line-height: 1.8;
+  }
+
+  .modal-tags-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .modal-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* :global required — .modal-tag elements are created dynamically via JS */
+  :global(.modal-tag) {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--white-55);
+    background: rgba(132,12,214,0.08);
+    border: 1px solid rgba(132,12,214,0.25);
+    border-radius: 100px;
+    padding: 4px 12px;
+    display: inline-block;
+  }
+
+  .modal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    padding: 9px 16px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background: #5c0fa3;
+    box-shadow: 0 2px 10px rgba(132, 12, 214, 0.35);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .modal-link:hover {
+    background: var(--color-purple);
+    box-shadow: 0 4px 16px rgba(132, 12, 214, 0.5);
+    transform: translateY(-1px);
+  }
+
+  .modal-link.hidden {
+    display: none;
+  }
+
+  /* Secondary CTA — same shape, outline treatment so it doesn't compete with the primary link */
+  .modal-link--secondary {
+    color: var(--color-purple);
+    background: transparent;
+    border-color: rgba(132, 12, 214, 0.35);
+    box-shadow: none;
+  }
+
+  .modal-link--secondary:hover {
+    background: var(--purple-05);
+    box-shadow: none;
+    color: var(--color-purple);
+  }
+
+  /* Responsive */
+  @media (max-width: 520px) {
+    .work-grid { grid-template-columns: 1fr; }
+    .modal-header { padding: 1rem 1.1rem 0.85rem; flex-wrap: wrap; gap: 8px; }
+    .modal-link #modal-link-label,
+    .modal-link #modal-link-secondary-label { display: none; }
+    .modal-link { padding: 8px; }
+    .filter-btn { font-size: 10px; padding: 4px 10px; }
+    .modal-body { padding: 1rem; }
+  }
+</style>
+
+<script is:inline define:vars={{ workData: workItems, badgeClasses }}>
+  // ── Filter tabs ─────────────────────────────────────
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.work-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter || 'all';
+      filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      cards.forEach(card => {
+        const type = card.dataset.type || '';
+        card.classList.toggle('hidden', filter !== 'all' && type !== filter);
+      });
+    });
+  });
+
+  // ── URL param deep-link filter (e.g. /work?filter=api) ──────────────────
+  const urlFilter = new URLSearchParams(window.location.search).get('filter');
+  if (urlFilter) {
+    const matchBtn = document.querySelector(`.filter-btn[data-filter="${urlFilter}"]`);
+    if (matchBtn) matchBtn.click();
+  }
+
+  // ── Work grid entrance animation (on load, not on scroll) ────────────────
+  const grid = document.getElementById('work-grid');
+  if (grid) {
+    requestAnimationFrame(() => requestAnimationFrame(() => grid.classList.add('animated')));
+  }
+
+  // ── Modal ────────────────────────────────────────────
+  const overlay = document.getElementById('work-modal');
+  const closeBtn = document.getElementById('modal-close');
+
+  function openModal(id) {
+    const item = workData.find(w => w.id === id);
+    if (!item || !overlay) return;
+
+    // Populate header
+    document.getElementById('modal-company').textContent = item.company;
+    const badge = document.getElementById('modal-badge');
+    badge.textContent = item.typeLabel;
+    badge.className = 'modal-badge ' + (badgeClasses[item.type] || '');
+
+    // Cover image — full image, no cropping
+    const coverImg = document.getElementById('modal-cover-img');
+    if (item.coverImage) {
+      coverImg.src = item.coverImage;
+      coverImg.alt = item.title;
+      coverImg.classList.remove('hidden');
+    } else {
+      coverImg.removeAttribute('src');
+      coverImg.classList.add('hidden');
+    }
+
+    // Populate body
+    document.getElementById('modal-title').textContent = item.title;
+    document.getElementById('modal-overview').textContent = item.details.overview;
+
+    // Key work list
+    const list = document.getElementById('modal-work-list');
+    list.innerHTML = '';
+    (item.details.keyWork || []).forEach(kw => {
+      const li = document.createElement('li');
+      li.textContent = kw;
+      list.appendChild(li);
+    });
+
+    // Outcome
+    document.getElementById('modal-outcome').textContent = item.details.outcome;
+
+    // Tags
+    const tagsEl = document.getElementById('modal-tags');
+    tagsEl.innerHTML = '';
+    (item.tags || []).forEach(tag => {
+      const span = document.createElement('span');
+      span.className = 'modal-tag';
+      span.textContent = tag;
+      tagsEl.appendChild(span);
+    });
+
+    // Link
+    const linkEl = document.getElementById('modal-link');
+    if (item.link) {
+      linkEl.href = item.link;
+      document.getElementById('modal-link-label').textContent = item.linkLabel || 'View documentation';
+      linkEl.classList.remove('hidden');
+    } else {
+      linkEl.classList.add('hidden');
+    }
+
+    // Secondary link
+    const secondaryLinkEl = document.getElementById('modal-link-secondary');
+    if (item.secondaryLink) {
+      secondaryLinkEl.href = item.secondaryLink;
+      document.getElementById('modal-link-secondary-label').textContent = item.secondaryLinkLabel || 'View more';
+      secondaryLinkEl.classList.remove('hidden');
+    } else {
+      secondaryLinkEl.classList.add('hidden');
+    }
+
+    // Show modal — reset scroll position first. The panel keeps its
+    // scrollLeft/scrollTop from the previous time it was open (it's the
+    // same reused DOM node, just toggled hidden/visible), so without this
+    // a stray horizontal scroll from an earlier overflow bug stays stuck
+    // even after the overflow itself is fixed.
+    const panel = overlay.querySelector('.modal-panel');
+    if (panel) { panel.scrollLeft = 0; panel.scrollTop = 0; }
+    overlay.setAttribute('aria-hidden', 'false');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Focus close button
+    setTimeout(() => closeBtn && closeBtn.focus({ preventScroll: true }), 50);
+  }
+
+  function closeModal() {
+    if (!overlay) return;
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  // Card click → open modal
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.id;
+      if (id) openModal(id);
+    });
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+    });
+  });
+
+  // Close triggers
+  closeBtn && closeBtn.addEventListener('click', closeModal);
+  overlay && overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // ── 3D tilt on hover ─────────────────────────────────
+  cards.forEach(card => {
+    const inner = card.querySelector('.card-inner');
+    if (!inner) return;
+    card.addEventListener('mousemove', e => {
+      const r = inner.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width / 2) / r.width * 9;
+      const y = (e.clientY - r.top - r.height / 2) / r.height * 9;
+      inner.style.transform = `perspective(600px) rotateX(${-y}deg) rotateY(${x}deg) translateZ(5px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      inner.style.transition = 'transform 0.4s ease';
+      inner.style.transform = '';
+      setTimeout(() => { inner.style.transition = ''; }, 400);
+    });
+    card.addEventListener('mouseenter', () => { inner.style.transition = 'transform 0.1s ease'; });
+  });
+</script>

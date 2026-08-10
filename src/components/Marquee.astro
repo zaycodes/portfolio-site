@@ -1,0 +1,228 @@
+---
+interface Company { name: string; logo: string | string[]; chip?: boolean; }
+
+const companies: Company[] = [
+  { name: 'Cisco · ThousandEyes', logo: ['/images/logos/cisco.svg', '/images/logos/thousandeyes.avif'] },
+  { name: 'Tealium',              logo: '/images/logos/tealium.svg' },
+  { name: 'Google',               logo: '/images/logos/google.svg' },
+  { name: 'Bard',                 logo: '/images/logos/bard.png' },
+  { name: 'Camunda',              logo: '/images/logos/camunda.svg', chip: true },
+  { name: 'WriteTech Hub',        logo: '/images/logos/writetechhub.png' },
+  { name: 'Wikimedia Foundation', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Wikimedia-logo.svg/120px-Wikimedia-logo.svg.png' },
+  { name: 'Jenkins',              logo: '/images/logos/jenkins.svg' },
+  { name: 'Magnopus',             logo: '/images/logos/magnopus.webp', chip: true },
+  { name: 'IOV Labs',             logo: '/images/logos/rootstock.svg' },
+  { name: 'She Code Africa',      logo: '/images/logos/she-code-africa.png' },
+  { name: 'Interswitch',          logo: '/images/logos/interswitch.png' },
+];
+---
+
+<div class="co" aria-label="Companies and communities I've worked with">
+  <div class="co-inner">
+
+    <div class="co-head">
+      <div class="co-label-row">
+        <span class="co-bar" aria-hidden="true"></span>
+        <p class="co-eyebrow">Trusted by</p>
+        <span class="co-rule" aria-hidden="true"></span>
+      </div>
+      <p class="co-headline">Companies &amp; communities I've worked with.</p>
+    </div>
+
+    <div class="co-grid">
+      {companies.map(c => {
+        const logos = Array.isArray(c.logo) ? c.logo : c.logo ? [c.logo] : [];
+        return (
+          <div class="co-item">
+            <div class="co-logo-wrap">
+              {logos.length > 0 && (
+                <div class="co-logo-group">
+                  {logos.map(src => (
+                    <img
+                      src={src}
+                      alt={c.name}
+                      class:list={['co-logo', { 'co-logo--chip': c.chip }]}
+                      loading="lazy"
+                    />
+                  ))}
+                </div>
+              )}
+              <span class="co-fallback" aria-hidden="true">
+                {c.name.split(/[\s·]+/).filter(Boolean)[0].slice(0, 2).toUpperCase()}
+              </span>
+            </div>
+            <span class="co-name">{c.name}</span>
+          </div>
+        );
+      })}
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.co-item').forEach(item => {
+    const imgs = item.querySelectorAll<HTMLImageElement>('.co-logo');
+    const fallback = item.querySelector<HTMLElement>('.co-fallback');
+    if (!imgs.length || !fallback) return;
+    imgs.forEach(img => {
+      img.addEventListener('error', () => {
+        img.style.display = 'none';
+        if ([...imgs].every(i => i.style.display === 'none')) fallback.style.display = 'flex';
+      });
+    });
+  });
+</script>
+
+<style>
+  .co {
+    background: var(--color-black);
+    border-bottom: 1px solid var(--purple-22);
+    /* Overlap Impact's bottom V — sits behind Impact (z-index: 1 vs Impact's 2) */
+    margin-top: -48px;
+    padding: calc(4.5rem + 48px) 1.75rem 4.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .co-inner { max-width: 1140px; margin: 0 auto; }
+
+  /* ── Header ── */
+  .co-head { margin-bottom: 3.5rem; }
+
+  .co-label-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .co-bar {
+    display: block;
+    width: 3px; height: 16px;
+    background: var(--color-purple);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .co-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-purple);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .co-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--purple-22);
+  }
+
+  .co-headline {
+    font-size: clamp(22px, 3.5vw, 34px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-white);
+    line-height: 1.1;
+  }
+
+  /* ── Logo grid — 4 columns, no backgrounds ── */
+  .co-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .co-item {
+    padding: 2.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 130px;
+    transition: background 0.25s;
+    cursor: default;
+  }
+
+  .co-item:hover { background: rgba(132,12,214,0.05); border-radius: 8px; }
+
+  /* Logo + fallback wrapper */
+  .co-logo-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    width: 100%;
+    max-width: 150px;
+  }
+
+  .co-logo-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .co-logo {
+    height: 52px;
+    width: auto;
+    max-width: 150px;
+    object-fit: contain;
+    filter: none;
+    opacity: 0.8;
+    transition: opacity 0.25s;
+    display: block;
+  }
+
+  /* Logos that ship dark by default — shown on a neutral chip in their true colour
+     rather than recoloured (forcing a colour change can violate brand usage) */
+  .co-logo--chip {
+    height: 40px;
+    background: rgba(255,255,255,0.94);
+    border-radius: 6px;
+    padding: 6px 10px;
+    opacity: 0.92;
+  }
+
+  .co-item:hover .co-logo { opacity: 1; }
+
+  .co-fallback {
+    display: none;
+    width: 100%;
+    height: 52px;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--white-22);
+    transition: color 0.25s;
+  }
+
+  .co-item:hover .co-fallback { color: var(--white-55); }
+
+  .co-name {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--white-30);
+    letter-spacing: 0.04em;
+    text-align: center;
+    line-height: 1.4;
+    transition: color 0.25s;
+  }
+
+  .co-item:hover .co-name { color: var(--white-55); }
+
+  @media (max-width: 860px)  { .co-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px)  {
+    .co { margin-top: -36px; padding: calc(3.5rem + 36px) 1.75rem 3.5rem; }
+    .co-grid { grid-template-columns: repeat(2, 1fr); }
+    .co-item { padding: 1.75rem 1rem; min-height: 110px; }
+    .co-head { margin-bottom: 2.5rem; }
+  }
+</style>

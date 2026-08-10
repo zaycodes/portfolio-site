@@ -1,0 +1,371 @@
+/* ============================================
+   ZAYCODES DESIGN SYSTEM
+   Global CSS — tokens, resets, base styles
+   ============================================ */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── Design Tokens ─────────────────────────── */
+/* Dark theme is the default (matches the original design) and requires no
+   attribute. Light theme activates via [data-theme="light"] on <html>,
+   set by the inline theme-init script in BaseLayout.astro before first paint. */
+:root {
+  color-scheme: dark;
+
+  /* Core palette */
+  --color-black:       #000000;
+  --color-card:        #111111;
+  --color-section:     #0d0d0d;
+  --color-dark-2:      #0a0a0a;
+  --color-purple:      #840CD6;
+  --color-white:       #FAFAFA;
+  --color-grey:        #6B6B6B;
+  --color-mint:        #C6FFE6;
+  --color-yellow:      #FFFFA1;
+
+  /* Purple alpha variants — low-opacity purple washes read fine on both
+     black and white, so these are intentionally theme-invariant. */
+  --purple-05:  rgba(132, 12, 214, 0.05);
+  --purple-10:  rgba(132, 12, 214, 0.10);
+  --purple-15:  rgba(132, 12, 214, 0.15);
+  --purple-22:  rgba(132, 12, 214, 0.22);
+  --purple-35:  rgba(132, 12, 214, 0.35);
+  --purple-50:  rgba(132, 12, 214, 0.50);
+
+  /* Ink/text alpha ladder — named "white" for historical reasons (dark
+     theme values are literally white at each opacity), redefined as dark
+     ink at matching steps under [data-theme="light"] below. */
+  --white-85: rgba(250, 250, 250, 0.85);
+  --white-55: rgba(250, 250, 250, 0.55);
+  --white-30: rgba(250, 250, 250, 0.30);
+  --white-22: rgba(250, 250, 250, 0.22);
+  --white-08: rgba(250, 250, 250, 0.08);
+
+  /* Section-tint surfaces — each section of the dark design uses a
+     slightly different near-black tint rather than one flat color.
+     Centralised here (with a hand-picked light counterpart) instead of
+     repeating literal hex per component. */
+  --surface-nav:    rgba(0, 0, 0, 0.96);
+  --surface-void:   #06000f;   /* WorkGrid */
+  --surface-plum:   #0d0716;   /* Leadership */
+  --surface-indigo: #140a22;   /* StatsTicker */
+  --surface-eggplant: #1d1033; /* work-with-me process steps */
+  --surface-card-a: #1c1230;   /* WorkCard gradient stop 1 */
+  --surface-card-b: #140d24;   /* WorkCard gradient stop 2 */
+  --surface-card-c: #0d0716;   /* WorkCard gradient stop 3 */
+  --surface-banner: #a190bd;   /* CtaLeadBlock accent panel */
+  --banner-ink:     #1a0e2e;   /* text on the CtaLeadBlock accent panel */
+  --banner-ink-2:   #3d0a70;   /* secondary/em text on the accent panel */
+  --overlay-scrim:  rgba(0, 0, 0, 0.85);   /* modal + photo-header overlays */
+
+  /* Typography */
+  --font-sans: 'Syne', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Spacing */
+  --section-padding: 2.5rem 1.75rem;
+
+  /* Transitions */
+  --transition-fast:   0.15s ease;
+  --transition-base:   0.25s ease;
+  --transition-slow:   0.4s ease;
+
+  /* Border radius */
+  --radius-sm:  3px;
+  --radius-md:  6px;
+  --radius-lg:  8px;
+  --radius-pill: 100px;
+}
+
+/* ── Light theme ───────────────────────────── */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --color-black:       #F2EEF8;   /* page background — recedes behind cards */
+  --color-card:        #FFFFFF;   /* cards float up from the page bg */
+  --color-section:     #F0EBF7;   /* recessed strip (Newsletter, etc.) */
+  --color-dark-2:      #EAE2F2;   /* darkest recessed strip (CtaStrip, LeadMagnet) */
+  --color-purple:      #840CD6;   /* accent is theme-invariant */
+  --color-white:       #170B24;   /* primary ink text */
+  --color-grey:        #6B6B6B;   /* mid-grey reads fine on light too */
+  --color-mint:        #0E8F63;
+  --color-yellow:      #7A6A00;
+
+  --white-85: rgba(23, 11, 36, 0.82);
+  --white-55: rgba(23, 11, 36, 0.62);
+  --white-30: rgba(23, 11, 36, 0.40);
+  --white-22: rgba(23, 11, 36, 0.16);
+  --white-08: rgba(23, 11, 36, 0.06);
+
+  --surface-nav:    rgba(255, 255, 255, 0.92);
+  --surface-void:   #F7F3FC;
+  --surface-plum:   #F5EFFA;
+  --surface-indigo: #F1EBF9;
+  --surface-eggplant: #EFE8F7;
+  --surface-card-a: #FFFFFF;
+  --surface-card-b: #FBF8FE;
+  --surface-card-c: #F5EEFB;
+  --surface-banner: #F1E7FA;
+  --banner-ink:     #1a0e2e;
+  --banner-ink-2:   #5c1aa8;
+  --overlay-scrim:  rgba(23, 11, 36, 0.4);
+}
+
+/* ── Reset ─────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-size: 20px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+
+input, textarea {
+  font-family: var(--font-mono);
+}
+
+/* ── Page title utility ────────────────────────── */
+.page-title {
+  font-size: clamp(36px, 6vw, 58px) !important;
+  font-weight: 800 !important;
+  color: var(--color-white) !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.05 !important;
+  margin-bottom: 0.85rem !important;
+}
+
+/* ── Container utility ─────────────────────────── */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.75rem;
+  width: 100%;
+}
+
+/* ── Utility classes ───────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ── Shared button styles ──────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-purple);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px 28px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity var(--transition-fast);
+  white-space: nowrap;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute; top: 0; left: -200%; width: 60%; height: 100%;
+  background: rgba(255,255,255,0.35); transform: skewX(-20deg);
+  transition: left 0.5s ease;
+}
+.btn-primary:hover::after { left: 200%; }
+.btn-primary:hover { opacity: 0.9; }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  color: var(--white-55);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--white-22);
+  cursor: pointer;
+  transition: border-color var(--transition-base), color var(--transition-base);
+  white-space: nowrap;
+}
+.btn-ghost:hover {
+  border-color: var(--white-55);
+  color: var(--color-white);
+}
+
+.btn-outline-purple {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--color-purple);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 7px 15px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-purple);
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background var(--transition-base), color var(--transition-base);
+  white-space: nowrap;
+}
+.btn-outline-purple:hover {
+  background: var(--color-purple);
+  color: #fff;
+}
+
+/* ── Section header pattern ────────────────── */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.section-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-purple);
+  white-space: nowrap;
+}
+
+.section-tag--yellow {
+  color: var(--color-yellow);
+}
+
+.section-rule {
+  flex: 1;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.section-rule--light {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ── Diagonal section transition ──────────── */
+.diagonal-top {
+  clip-path: polygon(0 52px, 100% 0, 100% 100%, 0 100%);
+  margin-top: -2px;
+  padding-top: calc(2.5rem + 52px);
+}
+
+.diagonal-top-right {
+  clip-path: polygon(0 0, 100% 52px, 100% 100%, 0 100%);
+  margin-top: -2px;
+  padding-top: calc(2.5rem + 52px);
+}
+
+
+/* ── Pulsing CTA button ─────────────────────────── */
+.btn-cta {
+  animation: ctaPulse 2.8s ease-in-out infinite;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease !important;
+}
+
+.btn-cta:hover {
+  animation: none !important;
+  transform: scale(1.06) !important;
+  box-shadow: 0 8px 30px rgba(132,12,214,0.55) !important;
+  opacity: 1 !important;
+}
+
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(132,12,214,0); }
+  50%       { box-shadow: 0 0 22px 6px rgba(132,12,214,0.38); }
+}
+
+/* ── Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-black); }
+::-webkit-scrollbar-thumb { background: var(--purple-22); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--purple-50); }
+
+/* ── Focus styles ──────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 3px;
+}
+
+/* ── Selection ─────────────────────────────── */
+::selection {
+  background: var(--purple-22);
+  color: var(--color-white);
+}
+
+/* ── Animations ────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gridScroll {
+  from { background-position: 0 0; }
+  to   { background-position: 48px 48px; }
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.1) translate(-8px, 8px); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}

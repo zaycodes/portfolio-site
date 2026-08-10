@@ -1,0 +1,33 @@
+---
+interface Props {
+  message?: string;
+  buttonText?: string;
+  href?: string;
+}
+const {
+  message = 'Have a documentation challenge?',
+  buttonText = 'Book a Call →',
+  href = 'https://cal.com/zainab-daodu/work-with-me',
+} = Astro.props;
+---
+<div class="cta-strip">
+  <div class="cta-strip-inner">
+    <p><strong>{message}</strong> Let's talk about what that looks like.</p>
+    <a href={href} class="cta-strip-btn btn-cta" target="_blank" rel="noopener noreferrer">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      {buttonText}
+    </a>
+  </div>
+</div>
+
+<style>
+  .cta-strip { background: var(--color-dark-2); border-top: 1px solid var(--purple-22); border-bottom: 1px solid var(--purple-22); padding: 1.1rem 1.75rem; }
+  .cta-strip-inner { max-width: 1140px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .cta-strip p { color: var(--white-55); font-size: 18px; line-height: 1.5; font-weight: 500; }
+  .cta-strip p strong { color: var(--color-white); font-weight: 600; }
+  .cta-strip-btn { background: var(--color-purple); color: #fff; font-family: var(--font-sans); font-size: 15px; font-weight: 700; padding: 12px 22px; border-radius: var(--radius-sm); white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; position: relative; overflow: hidden; transition: opacity 0.2s; }
+  .cta-strip-btn::after { content: ''; position: absolute; top: 0; left: -200%; width: 60%; height: 100%; background: rgba(255,255,255,0.35); transform: skewX(-20deg); transition: left 0.4s ease; }
+  .cta-strip-btn:hover::after { left: 200%; }
+  .cta-strip-btn:hover { opacity: 0.95; }
+  @media (max-width: 500px) { .cta-strip-inner { flex-direction: column; align-items: flex-start; } }
+</style>

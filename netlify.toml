@@ -1,0 +1,19 @@
+[build]
+  command = "git clone https://x-access-token:$RESOURCES_REPO_TOKEN@github.com/zaycodes/portfolio-resources.git resources-src && cd resources-src && npm install && node build-pdfs.mjs ../public/downloads && cd .. && npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/subscribe"
+  to = "/.netlify/functions/subscribe"
+  status = 200
+
+[[headers]]
+  for = "/downloads/*.pdf"
+  [headers.values]
+    Content-Disposition = "attachment"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,313 @@
+---
+// Nav.astro — Sticky navigation, always visible
+// "Book a Call" CTA is always present in the nav
+
+import ThemeToggle from './ThemeToggle.astro';
+
+const navLinks = [
+  { href: '/work',         label: 'Work' },
+  { href: '/about',        label: 'About' },
+  { href: '/work-with-me', label: 'Work With Me' },
+  { href: '/resources',    label: 'Resources' },
+  { href: '/speaking',     label: 'Speaking' },
+];
+
+const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="nav" aria-label="Main navigation">
+  <a href="/" class="logo" aria-label="Zaycodes — home">
+    <span class="logo-chip">
+      <img src="/images/zaycodes-wordmark.png" alt="zaycodes" class="logo-wordmark" height="28" />
+    </span>
+  </a>
+
+  <ul class="nav-links" role="list">
+    {navLinks.map(link => (
+      <li>
+        <a
+          href={link.href}
+          class:list={['nav-link', { active: currentPath === link.href || currentPath.startsWith(link.href + '/') || currentPath.startsWith(link.href + '?') }]}
+        >
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <div class="nav-right">
+    <ThemeToggle />
+    <a href={BOOK_A_CALL_URL} class="nav-cta" target="_blank" rel="noopener noreferrer">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Book a Call
+    </a>
+  </div>
+
+  <!-- Mobile menu toggle -->
+  <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+  <ul role="list">
+    {navLinks.map(link => (
+      <li>
+        <a href={link.href} class="mobile-link">{link.label}</a>
+      </li>
+    ))}
+    <li class="mobile-theme-row">
+      <span class="mobile-theme-label">Appearance</span>
+      <ThemeToggle />
+    </li>
+    <li>
+      <a href={BOOK_A_CALL_URL} class="mobile-cta" target="_blank" rel="noopener noreferrer">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Book a Call
+      </a>
+    </li>
+  </ul>
+</div>
+
+<style>
+  .nav {
+    background: var(--surface-nav);
+    height: 56px;
+    padding: 0 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--purple-22);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* Logo */
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .logo-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 6px;
+    transition: background var(--transition-base);
+  }
+
+  /* The wordmark PNG is off-white text drawn for a dark backdrop, so on the
+     light theme (where the nav bar itself goes light) it would nearly
+     vanish. Give it a small dark chip instead — the same technique the
+     work cards already use for brand logos that only work on one background. */
+  :global(html[data-theme="light"]) .logo-chip {
+    background: #0d0716;
+    padding: 5px 10px;
+  }
+
+  .logo-wordmark {
+    height: 28px;
+    width: auto;
+    display: block;
+    transition: opacity var(--transition-base);
+  }
+
+  .logo:hover .logo-wordmark { opacity: 0.85; }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .nav-link {
+    color: var(--white-55);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color var(--transition-base);
+    position: relative;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--color-white);
+  }
+
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--color-purple);
+  }
+
+  /* CTA */
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-purple);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 11px 22px;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-decoration: none;
+    animation: ctaPulse 2.8s ease-in-out infinite;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+
+  .nav-cta:hover {
+    animation: none;
+    opacity: 1;
+    transform: scale(1.06);
+    box-shadow: 0 8px 30px rgba(132,12,214,0.55);
+  }
+
+  /* Hamburger — hidden on desktop */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--color-white);
+    transition: transform var(--transition-base), opacity var(--transition-base);
+  }
+
+  .nav-hamburger[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .nav-hamburger[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-hamburger[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 52px;
+    left: 0;
+    right: 0;
+    background: var(--surface-nav);
+    border-bottom: 1px solid var(--purple-22);
+    padding: 1.25rem 1.75rem;
+    z-index: 99;
+    backdrop-filter: blur(8px);
+  }
+
+  .mobile-theme-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+  }
+
+  .mobile-theme-label {
+    color: var(--white-55);
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .mobile-menu[aria-hidden="false"] {
+    display: block;
+  }
+
+  .mobile-menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+  }
+
+  .mobile-link {
+    color: var(--white-55);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    display: block;
+    padding: .4rem 0;
+    transition: color var(--transition-base);
+  }
+
+  .mobile-link:hover { color: var(--color-white); }
+
+  .mobile-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: .5rem;
+    background: var(--color-purple);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .nav-right { display: none; }
+    .nav-hamburger { display: flex; }
+  }
+</style>
+
+<script>
+  const hamburger = document.querySelector('.nav-hamburger') as HTMLButtonElement;
+  const mobileMenu = document.getElementById('mobile-menu') as HTMLDivElement;
+
+  hamburger?.addEventListener('click', () => {
+    const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', String(!isExpanded));
+    mobileMenu.setAttribute('aria-hidden', String(isExpanded));
+  });
+
+  // Close mobile menu on link click
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger?.setAttribute('aria-expanded', 'false');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    });
+  });
+</script>

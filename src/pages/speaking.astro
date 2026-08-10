@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import CtaLeadBlock from '../components/CtaLeadBlock.astro';
+import Newsletter from '../components/Newsletter.astro';
+import Footer from '../components/Footer.astro';
+import MediaKit from '../components/MediaKit.astro';
+import { speakingEvents, eventTypeLabels } from '../data/speaking';
+import type { EventType } from '../data/speaking';
+
+const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
+
+const years = [...new Set(speakingEvents.map(e => e.year))].sort((a,b) => b - a);
+
+const typeColors: Record<EventType, string> = {
+  conference:     'type-conference',
+  summit:         'type-summit',
+  workshop:       'type-workshop',
+  webinar:        'type-webinar',
+  panel:          'type-panel',
+  'twitter-space':'type-twitter',
+};
+
+// Fixed hex/mid-tone values only — these are set as an inline custom
+// property per card (`style={--event-accent: ...}`), so a theme override in
+// CSS can't reach them. "webinar" uses a mid-grey instead of a white-based
+// tint so the accent bar stays visible on both a near-black and a
+// near-white card.
+const typeAccents: Record<EventType, string> = {
+  conference:     '#840CD6',
+  summit:         '#15B889',
+  workshop:       '#c8c840',
+  webinar:        '#8a8a8a',
+  panel:          '#e0952a',
+  'twitter-space':'#6ab4f5',
+};
+
+const totalTalks = speakingEvents.length;
+const totalConferences = speakingEvents.filter(e => e.type === 'conference' || e.type === 'summit').length;
+---
+
+<BaseLayout
+  title="Speaking — Zainab Daodu"
+  description="Conference talks, workshops, and appearances on technical writing, API documentation, AI workflows, and developer experience. FOSS Backstage, Open Source Summit, State of Open CON, and more."
+>
+  <Nav />
+
+  <header class="page-header">
+    <img src="/images/zainab-speaking-designday.JPG" alt="Zainab Daodu speaking at GOV.UK Design System Day" class="header-bg-img" loading="eager" />
+    <div class="header-overlay" aria-hidden="true"></div>
+    <div class="container header-body">
+      <p class="page-eyebrow">Speaking</p>
+      <h1 class="page-title">Talks &amp; Events</h1>
+      <p class="page-desc">Conference talks, workshops, and events on technical writing, documentation strategy, accessible and inclusive documentation, and open source community building.</p>
+      <div class="header-stats">
+        <div class="hstat"><span class="hstat-n">{totalTalks}+</span><span class="hstat-l">events</span></div>
+        <div class="hstat"><span class="hstat-n">{totalConferences}+</span><span class="hstat-l">conferences</span></div>
+        <div class="hstat"><span class="hstat-n">{years.length}</span><span class="hstat-l">years speaking</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Media kit + CTA — same visual weight, clear alignment -->
+  <div class="speaking-actions">
+    <div class="container">
+      <div class="actions-inner">
+        <div class="action-block">
+          <p class="action-label">Need assets for event promotion?</p>
+          <p class="action-sub">Get my bio, headshot, and social handles instantly.</p>
+        </div>
+        <MediaKit />
+        <div class="action-divider" aria-hidden="true"></div>
+        <div class="action-block">
+          <p class="action-label">Interested in having me speak?</p>
+          <p class="action-sub">Conferences, workshops, community events, and podcasts.</p>
+        </div>
+        <a href={BOOK_A_CALL_URL} class="btn-primary btn-cta speaking-cta" target="_blank" rel="noopener noreferrer">
+          Get in Touch →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main class="speaking-main">
+    <div class="container">
+      {years.map(year => {
+        const yearEvents = speakingEvents.filter(e => e.year === year);
+        return (
+          <div class="year-group scroll-fade">
+            <div class="year-label">
+              <span class="year-num">{year}</span>
+              <span class="year-count">{yearEvents.length} talk{yearEvents.length !== 1 ? 's' : ''}</span>
+              <div class="year-line" role="presentation"></div>
+            </div>
+            <div class="events-list">
+              {yearEvents.map(event => (
+                <article class="event-card" style={`--event-accent: ${typeAccents[event.type]}`}>
+                  <div class="event-accent-bar" aria-hidden="true"></div>
+                  <div class="event-body">
+                    <div class="event-header">
+                      <div class="event-meta">
+                        <span class="event-name">{event.event}</span>
+                        <div class="event-details">
+                          <span class="event-location">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            {event.location}
+                          </span>
+                          <span class="event-sep" aria-hidden="true">·</span>
+                          <span class="event-date">{event.date}</span>
+                        </div>
+                      </div>
+                      <span class:list={['type-badge', typeColors[event.type]]}>{eventTypeLabels[event.type]}</span>
+                    </div>
+                    <h3 class="event-title">{event.title}</h3>
+                    {(event.slides || event.recording || event.eventLink) && (
+                      <div class="event-links">
+                        {event.slides && (
+                          <a href={event.slides} class="event-link" target="_blank" rel="noopener noreferrer">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                            Slides
+                          </a>
+                        )}
+                        {event.recording && (
+                          <a href={event.recording} class="event-link" target="_blank" rel="noopener noreferrer">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                            Recording
+                          </a>
+                        )}
+                        {event.eventLink && (
+                          <a href={event.eventLink} class="event-link" target="_blank" rel="noopener noreferrer">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+                            Event
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </main>
+
+  <CtaLeadBlock />
+  <Newsletter />
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-header {
+    position: relative; overflow: hidden;
+    min-height: 480px;
+    display: flex; align-items: flex-end;
+    border-bottom: 1px solid var(--purple-22);
+  }
+  .header-bg-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 25%;
+    display: block;
+  }
+  .header-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.3) 100%);
+  }
+  :global(html[data-theme="light"]) .header-overlay {
+    background: linear-gradient(to top, rgba(242,238,248,0.92) 0%, rgba(242,238,248,0.68) 50%, rgba(242,238,248,0.28) 100%);
+  }
+  .header-body {
+    position: relative; z-index: 1;
+    padding-top: 3.5rem; padding-bottom: 3.5rem;
+  }
+  .page-eyebrow { font-family: var(--font-mono); font-size: 12px; color: var(--color-purple); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .page-title { font-size: clamp(36px, 6vw, 58px); font-weight: 800; color: var(--color-white); letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 0.85rem; }
+  .page-desc { color: var(--white-55); font-size: 18px; line-height: 1.75; max-width: 520px; margin-bottom: 2rem; }
+  .header-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+  .hstat { display: flex; flex-direction: column; gap: 2px; }
+  .hstat-n { font-family: var(--font-mono); font-size: 36px; font-weight: 500; color: var(--color-purple); line-height: 1; letter-spacing: -0.02em; }
+  .hstat-l { font-size: 14px; color: var(--white-55); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* Actions strip — media kit + CTA, aligned */
+  .speaking-actions {
+    background: var(--color-dark-2);
+    border-bottom: 1px solid var(--purple-22);
+    padding: 1.5rem 1.75rem;
+  }
+  .actions-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .action-block { flex: 1; min-width: 180px; }
+  .action-label { color: var(--color-white); font-size: 16px; font-weight: 600; margin-bottom: 3px; }
+  .action-sub { color: var(--white-55); font-size: 14px; }
+  .action-divider { width: 1px; height: 48px; background: var(--purple-22); flex-shrink: 0; }
+  .speaking-cta { font-size: 14px !important; padding: 11px 22px !important; }
+  @media (max-width: 700px) {
+    .actions-inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+    .action-divider { display: none; }
+  }
+
+  /* Speaking timeline */
+  .speaking-main { background: var(--color-black); padding: 3.5rem 0 4rem; }
+  .year-group { margin-bottom: 3.5rem; }
+  .year-group:last-child { margin-bottom: 0; }
+  .year-label { display: flex; align-items: baseline; gap: 0.85rem; margin-bottom: 1.5rem; }
+  .year-num { font-size: 32px; font-weight: 800; color: var(--color-purple); letter-spacing: -0.03em; }
+  .year-count { font-family: var(--font-mono); font-size: 14px; color: var(--color-grey); }
+  .year-line { flex: 1; height: 1px; background: var(--purple-22); }
+  .events-list { display: flex; flex-direction: column; gap: 8px; }
+
+  /* Event cards — visual accent bar on left */
+  .event-card {
+    display: flex;
+    background: var(--color-card);
+    border: 1px solid var(--white-08);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+  .event-card:hover { transform: translateX(4px); box-shadow: 0 6px 24px rgba(0,0,0,0.4); }
+  .event-accent-bar { width: 4px; background: var(--event-accent); flex-shrink: 0; transition: width 0.2s; }
+  .event-card:hover .event-accent-bar { width: 6px; }
+  .event-body { flex: 1; padding: 1.25rem 1.5rem; }
+  .event-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+  .event-meta { display: flex; flex-direction: column; gap: 4px; }
+  .event-name { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--color-purple); letter-spacing: 0.1em; text-transform: uppercase; }
+  .event-details { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
+  .event-location { font-family: var(--font-mono); font-size: 12px; color: var(--color-grey); display: flex; align-items: center; gap: 4px; }
+  .event-sep { color: var(--color-grey); font-size: 12px; }
+  .event-date { font-family: var(--font-mono); font-size: 12px; color: var(--color-grey); }
+  .type-badge { font-size: 10px; font-weight: 700; padding: 3px 0; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; flex-shrink: 0; }
+  .type-conference { color: #bf7fff; }
+  .type-summit { color: #15B889; }
+  .type-workshop { color: #c8c840; }
+  .type-webinar { color: var(--white-55); }
+  .type-panel { color: #e0952a; }
+  .type-twitter { color: #6ab4f5; }
+  /* Deeper counterparts for the light card background — the dark theme's
+     light, high-key tints wash out on near-white. */
+  :global(html[data-theme="light"]) .type-conference { color: #7A1FC4; }
+  :global(html[data-theme="light"]) .type-summit { color: #0B7A56; }
+  :global(html[data-theme="light"]) .type-workshop { color: #8A8A1F; }
+  :global(html[data-theme="light"]) .type-panel { color: #9C5E12; }
+  :global(html[data-theme="light"]) .type-twitter { color: #1D6FB8; }
+  .event-title { font-size: 18px; font-weight: 700; color: var(--color-white); line-height: 1.45; letter-spacing: -0.02em; margin-bottom: 0.65rem; margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--white-08); }
+  .event-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .event-link { display: inline-flex; align-items: center; gap: 5px; font-size: 14px; font-weight: 600; color: var(--color-purple); text-decoration: none; transition: opacity 0.2s; }
+  .event-link:hover { opacity: 0.75; }
+  @media (max-width: 600px) { .event-header { flex-direction: column; } .event-body { padding: 1rem; } }
+</style>

@@ -1,0 +1,360 @@
+---
+import type { WorkItem } from '../data/work';
+
+interface Props { item: WorkItem; }
+const { item } = Astro.props;
+
+const typeClass = { api: 'badge-api', product: 'badge-product', ux: 'badge-ux', ops: 'badge-ops' }[item.type];
+const hasCover = !!item.coverImage;
+
+// ThousandEyes is a Cisco product — pair the Cisco mark alongside it everywhere it appears.
+const logos = item.logoUrl
+  ? (item.company.includes('Cisco') && item.logoUrl.includes('thousandeyes')
+      ? ['/images/logos/cisco.svg', item.logoUrl]
+      : [item.logoUrl])
+  : [];
+// Tealium's asset is a pre-made white variant meant for dark backgrounds — a white chip
+// behind it would hide it, so it renders bare instead of on the usual neutral chip.
+const isBareLogo = (src: string) => src.includes('tealium.svg');
+---
+
+<article
+  class="work-card"
+  data-id={item.id}
+  data-type={item.type}
+  tabindex="0"
+  role="button"
+  aria-label={`${item.title} — click to view case study`}
+>
+  <div class={`card-inner type-${item.type}`}>
+
+    <!-- Cover area: real image or gradient placeholder -->
+    <div class:list={['card-cover', { 'card-cover--img': hasCover }]}>
+      {hasCover ? (
+        <>
+          <img src={item.coverImage} alt="" class="card-cover-photo" loading="lazy" aria-hidden="true" />
+          <div class="card-cover-fade" aria-hidden="true"></div>
+          {logos.length > 0 && (
+            <div class="card-cover-logo-group">
+              {logos.map(src => (
+                <img
+                  src={src}
+                  alt={item.company}
+                  class:list={['card-cover-logo-badge', { 'card-cover-logo-badge--bare': isBareLogo(src) }]}
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          {logos.length > 0 ? (
+            <div class="card-placeholder-logo-group">
+              {logos.map(src => (
+                <img
+                  src={src}
+                  alt={item.company}
+                  class:list={['card-placeholder-logo', { 'card-placeholder-logo--bare': isBareLogo(src) }]}
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          ) : (
+            <span class="card-placeholder-initials">
+              {item.company.split(/[\s·]+/)[0].slice(0, 2).toUpperCase()}
+            </span>
+          )}
+        </>
+      )}
+    </div>
+
+    <div class="card-header">
+      <span class="card-company">{item.company}</span>
+      <span class={`card-badge ${typeClass}`}>{item.typeLabel}</span>
+    </div>
+    <h3 class="card-title">{item.title}</h3>
+    <p class="card-desc">{item.description}</p>
+    <ul class="card-tags" role="list">
+      {item.tags.slice(0, 4).map(tag => <li class="card-tag">{tag}</li>)}
+    </ul>
+    <div class="card-cta">
+      <span class="card-cta-text">View case study</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+  </div>
+</article>
+
+<style>
+  .work-card {
+    perspective: 700px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .work-card:focus-visible .card-inner {
+    box-shadow: 0 0 0 2px rgba(132,12,214,0.4);
+  }
+
+  .card-inner {
+    --card-accent: 132,12,214;
+    background: linear-gradient(155deg, var(--surface-card-a) 0%, var(--surface-card-b) 50%, var(--surface-card-c) 100%);
+    border: 1px solid var(--white-08);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.12s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    transform-style: preserve-3d;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    height: 100%;
+    padding-bottom: 1.25rem;
+  }
+
+  /* Soft glow bleeding down from the top edge, colour-coded per category — replaces a hard border bar */
+  .card-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 110px;
+    background: radial-gradient(ellipse 75% 100% at 50% 0%, rgba(var(--card-accent), 0.4) 0%, transparent 75%);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card-inner.type-api     { --card-accent: 132,12,214; }
+  .card-inner.type-product { --card-accent: 14,168,118; }
+  .card-inner.type-ux      { --card-accent: 200,200,64; }
+  .card-inner.type-ops     { --card-accent: 255,255,255; }
+
+  /* The "ops" card's top glow uses white as its accent — invisible on the
+     light theme's near-white cards, so it gets a dark-ink accent instead. */
+  :global(html[data-theme="light"]) .card-inner.type-ops { --card-accent: 23,11,36; }
+
+  .work-card:hover .card-inner { border-color: rgba(132,12,214,0.3); }
+
+  .work-card:hover .card-inner {
+    box-shadow: 0 20px 50px rgba(132,12,214,0.22), 0 4px 20px rgba(0,0,0,0.35);
+  }
+  .work-card[data-type="product"]:hover .card-inner { box-shadow: 0 20px 50px rgba(14,168,118,0.2), 0 4px 20px rgba(0,0,0,0.35); }
+  .work-card[data-type="ux"]:hover .card-inner      { box-shadow: 0 20px 50px rgba(150,150,0,0.16), 0 4px 20px rgba(0,0,0,0.35); }
+
+  /* ── Cover area ──────────────────────────────────── */
+  .card-cover {
+    width: 100%;
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--white-08);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  /* Gradient placeholder backgrounds per type */
+  .card-inner.type-api .card-cover     { background: radial-gradient(ellipse at 55% 35%, rgba(132,12,214,0.22) 0%, transparent 65%), linear-gradient(160deg, rgba(132,12,214,0.08) 0%, rgba(0,0,0,0.4) 100%); }
+  .card-inner.type-product .card-cover { background: radial-gradient(ellipse at 55% 35%, rgba(14,168,118,0.2) 0%, transparent 65%), linear-gradient(160deg, rgba(14,168,118,0.07) 0%, rgba(0,0,0,0.4) 100%); }
+  .card-inner.type-ux .card-cover      { background: radial-gradient(ellipse at 55% 35%, rgba(200,200,64,0.18) 0%, transparent 65%), linear-gradient(160deg, rgba(200,200,64,0.06) 0%, rgba(0,0,0,0.4) 100%); }
+  .card-inner.type-ops .card-cover     { background: radial-gradient(ellipse at 55% 35%, rgba(255,255,255,0.08) 0%, transparent 65%), linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.4) 100%); }
+  /* The "ops" placeholder cover's white-based tint is invisible on the
+     light theme's near-white cards — swap to a dark-ink tint instead. */
+  :global(html[data-theme="light"]) .card-inner.type-ops .card-cover { background: radial-gradient(ellipse at 55% 35%, rgba(23,11,36,0.07) 0%, transparent 65%), linear-gradient(160deg, rgba(23,11,36,0.05) 0%, rgba(23,11,36,0.12) 100%); }
+
+  /* Real cover photo */
+  .card-cover--img { height: 260px; }
+
+  .card-cover-photo {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+    display: block;
+    filter: brightness(0.9) saturate(0.92);
+    transition: filter 0.25s ease, transform 0.3s ease;
+  }
+
+  .work-card:hover .card-cover-photo { filter: brightness(0.97) saturate(1); transform: scale(1.03); }
+
+  /* Fades the screenshot into the dark card frame top and bottom, rather than a hard crop */
+  .card-cover-fade {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(13,7,22,0.35) 0%, transparent 22%, transparent 60%, rgba(13,7,22,0.75) 100%),
+      linear-gradient(to top, transparent 0%, rgba(13,7,22,0.25) 100%);
+    pointer-events: none;
+  }
+
+  /* Logo badge(s) overlaid bottom-left on real cover images — shown in real brand colour
+     on a neutral chip, never recoloured (forcing a logo's colour can violate brand usage) */
+  .card-cover-logo-group {
+    position: absolute;
+    bottom: 10px; left: 10px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    z-index: 1;
+  }
+  .card-cover-logo-badge {
+    height: 24px;
+    width: auto;
+    max-width: 90px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.94);
+    border-radius: 5px;
+    padding: 4px 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  /* Pre-made white/light logo asset — no chip, or it disappears against it */
+  .card-cover-logo-badge--bare { background: none; padding: 0; box-shadow: none; }
+
+  /* Placeholder logo (gradient background, no real photo) — same neutral-chip treatment */
+  .card-placeholder-logo-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    z-index: 1;
+  }
+  .card-placeholder-logo {
+    height: 28px;
+    width: auto;
+    max-width: 100px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.94);
+    border-radius: 5px;
+    padding: 6px 10px;
+    transition: transform 0.25s ease;
+  }
+  .card-placeholder-logo--bare { background: none; padding: 0; }
+  .work-card:hover .card-placeholder-logo { transform: scale(1.05); }
+
+  .card-placeholder-initials {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--white-22);
+    font-family: var(--font-sans);
+    z-index: 1;
+  }
+
+  /* ── Card body ──────────────────────────────────── */
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 0 1.25rem;
+  }
+
+  .card-company {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--white-55);
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 3px 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .badge-api     { color: #bf7fff; }
+  .badge-product { color: #15B889; }
+  .badge-ux      { color: #d4d44a; }
+  .badge-ops     { color: var(--white-55); }
+
+  /* Deeper, more saturated counterparts for the light card background —
+     the dark theme's light, high-key tints wash out on near-white. */
+  :global(html[data-theme="light"]) .badge-api     { color: #7A1FC4; }
+  :global(html[data-theme="light"]) .badge-product { color: #0B7A56; }
+  :global(html[data-theme="light"]) .badge-ux      { color: #8A8A1F; }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-white);
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    transition: color 0.2s ease;
+    padding: 0 1.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .work-card:hover .card-title { color: #bf7fff; }
+  :global(html[data-theme="light"]) .work-card:hover .card-title { color: #7A1FC4; }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--white-55);
+    line-height: 1.65;
+    padding: 0 1.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0 1.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-tag {
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    color: var(--white-55);
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    padding: 2px 6px;
+  }
+  /* The dark theme's tag pill is a faint white wash on a near-black card;
+     on the light theme's near-white card that same wash disappears, so it
+     needs a faint dark-ink wash instead. */
+  :global(html[data-theme="light"]) .card-tag { background: rgba(23,11,36,0.06); }
+
+  .card-cta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: auto;
+    padding: 0.6rem 1.25rem 0;
+    border-top: 1px solid var(--white-08);
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-cta-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: #a070d9;
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease;
+  }
+
+  .card-cta svg { color: #a070d9; transition: transform 0.2s ease, color 0.2s ease; }
+  :global(html[data-theme="light"]) .card-cta-text,
+  :global(html[data-theme="light"]) .card-cta svg { color: #7A1FC4; }
+
+  .work-card:hover .card-cta-text,
+  .work-card:hover .card-cta svg { color: var(--color-purple, #840CD6); }
+  .work-card:hover .card-cta svg { transform: translateX(3px); }
+</style>

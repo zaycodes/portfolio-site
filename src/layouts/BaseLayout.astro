@@ -1,0 +1,77 @@
+---
+// BaseLayout.astro — HTML shell for all pages
+import '../styles/global.css';
+import ScrollAnimations from '../components/ScrollAnimations.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string;
+}
+
+const {
+  title = 'Zainab Daodu — Senior Technical Writer',
+  description = 'Senior Technical Writer with 8+ years of experience. API documentation, product docs, UX writing, and documentation operations. Before I documented the code, I wrote it.',
+  image = '/og-image.png',
+  canonicalURL = Astro.url.href,
+} = Astro.props;
+
+const fullTitle = title.includes('Zainab') ? title : `${title} — Zainab Daodu`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Resolve theme before first paint: stored choice wins, otherwise
+         follow the OS/browser preference. Must be a blocking inline script
+         (not type="module", which defers) so there's no flash of the wrong theme. -->
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem('theme');
+        var theme = stored || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary meta -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url).href} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@Zayc0des" />
+    <meta name="twitter:creator" content="@Zayc0des" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, Astro.url).href} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts — preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+
+  </head>
+  <body>
+    <slot />
+    <ScrollAnimations />
+  </body>
+</html>
