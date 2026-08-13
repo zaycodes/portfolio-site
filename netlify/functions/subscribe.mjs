@@ -26,7 +26,8 @@ export async function handler(event) {
   }
 
   const email = (params.get('email') || '').trim();
-  const name = (params.get('name') || '').trim();
+  const firstName = (params.get('firstName') || '').trim();
+  const lastName = (params.get('lastName') || '').trim();
   const resource = (params.get('resource') || '').trim();
   const groupId = RESOURCE_GROUPS[resource];
 
@@ -50,7 +51,8 @@ export async function handler(event) {
       },
       body: JSON.stringify({
         email,
-        ...(name && { firstname: name }),
+        ...(firstName && { firstname: firstName }),
+        ...(lastName && { lastname: lastName }),
         groups: [groupId],
         trigger_automation: true,
       }),

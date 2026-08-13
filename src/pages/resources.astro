@@ -148,7 +148,8 @@ const toolkits = [
             >
               <input type="hidden" name="resource" value={r.formName} />
               <input type="hidden" name="bot-field" />
-              <input type="text" name="name" placeholder="Your name" class="res-input" required autocomplete="name" />
+              <input type="text" name="firstName" placeholder="First name" class="res-input" required autocomplete="given-name" />
+              <input type="text" name="lastName" placeholder="Last name" class="res-input" required autocomplete="family-name" />
               <input type="email" name="email" placeholder="your@email.com" class="res-input" required autocomplete="email" />
               <button type="submit" class="res-btn">{r.ctaLabel} →</button>
             </form>
