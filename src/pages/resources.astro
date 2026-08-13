@@ -12,7 +12,6 @@ const toolkits = [
     tag: 'Free · For individual writers',
     tagColor: 'tag-purple',
     title: 'The AI Docs Playbook',
-    titleHighlight: true,
     audience: 'Practical AI workflows for technical writers who want a more consistent documentation process.',
     desc: 'Five reusable workflows based on documentation work. They work with ChatGPT, Claude, Gemini, and other AI assistants.',
     contents: [
@@ -31,7 +30,6 @@ const toolkits = [
     tag: 'Free · For senior writers & teams',
     tagColor: 'tag-teal',
     title: 'The AI Documentation Pipeline',
-    titleHighlight: false,
     audience: 'For technical writers and documentation leads working in git-based repositories who want consistent AI workflows across a team.',
     desc: 'A three-layer system that brings AI into the documentation workflow, from planning and drafting to review and release. It lives in your repository so the process stays consistent as your team grows.',
     contents: [
@@ -50,7 +48,6 @@ const toolkits = [
     tag: 'Free · For multilingual teams',
     tagColor: 'tag-yellow',
     title: 'The AI Translation Pipeline',
-    titleHighlight: false,
     audience: 'For teams maintaining documentation in multiple languages who want a more reliable translation workflow.',
     desc: 'A structured system for translating documentation with change detection, glossary management, and human review built into the process. It helps teams automate repetitive translation work while keeping control over terminology and quality.',
     contents: [
@@ -68,7 +65,6 @@ const toolkits = [
     tag: 'Free · For docs teams & leads',
     tagColor: 'tag-neutral',
     title: 'The AI-Ready Documentation Framework',
-    titleHighlight: false,
     audience: 'For documentation leads and teams preparing their docs for AI tools, including coding agents, copilots, and RAG systems.',
     desc: 'A seven-phase framework for improving how AI tools discover, read, and use documentation. It covers benchmarking, machine-readable delivery, content structure, agent instruction files, AI-assisted workflows, maintenance, and measurement. Includes a real-world case study showing how one team improved their benchmark score from the high 50s to the mid-70s.',
     contents: [
@@ -127,7 +123,7 @@ const toolkits = [
             <div class="card-top">
               <span class:list={['res-tag', r.tagColor]}>{r.tag}</span>
             </div>
-            <h2 class:list={['res-title', r.titleHighlight ? 'title-accent' : '']}>{r.title}</h2>
+            <h2 class="res-title">{r.title}</h2>
             <p class="res-audience">{r.audience}</p>
             <p class="res-desc">{r.desc}</p>
             <div class="res-contents">
@@ -136,7 +132,7 @@ const toolkits = [
                 {r.contents.map(item => (
                   <li>
                     <span class="item-num" aria-hidden="true">→</span>
-                    <span>{item}</span>
+                    <span class="item-text">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -152,6 +148,7 @@ const toolkits = [
             >
               <input type="hidden" name="resource" value={r.formName} />
               <input type="hidden" name="bot-field" />
+              <input type="text" name="name" placeholder="Your name" class="res-input" required autocomplete="name" />
               <input type="email" name="email" placeholder="your@email.com" class="res-input" required autocomplete="email" />
               <button type="submit" class="res-btn">{r.ctaLabel} →</button>
             </form>
@@ -403,7 +400,6 @@ const toolkits = [
 
   /* Text */
   .res-title { font-size: clamp(22px, 3vw, 28px); font-weight: 800; color: var(--color-white); letter-spacing: -0.03em; line-height: 1.1; }
-  .title-accent { color: var(--color-purple); }
   .res-audience { font-size: 13px; color: var(--color-purple); font-family: var(--font-mono); line-height: 1.5; }
   .res-desc { font-size: 15px; color: var(--white-55); line-height: 1.75; }
 
@@ -413,13 +409,14 @@ const toolkits = [
   .contents-list li { display: flex; gap: 0.75rem; padding: 0.55rem 0; border-bottom: 1px solid var(--white-08); font-size: 14px; color: var(--white-55); line-height: 1.6; }
   .contents-list li:last-child { border-bottom: none; }
   .item-num { color: var(--color-purple); font-family: var(--font-mono); font-size: 11px; flex-shrink: 0; padding-top: 2px; }
+  .item-text { flex: 1; min-width: 0; }
 
   /* Forms */
-  .res-form { display: flex; gap: 8px; margin-top: auto; }
-  .res-input { flex: 1; background: var(--white-08); border: 1px solid var(--white-22); border-radius: 3px; padding: 12px 16px; font-family: var(--font-mono); font-size: 14px; color: var(--color-white); outline: none; transition: border-color 0.2s; }
+  .res-form { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+  .res-input { width: 100%; background: var(--white-08); border: 1px solid var(--white-22); border-radius: 3px; padding: 12px 16px; font-family: var(--font-mono); font-size: 14px; color: var(--color-white); outline: none; transition: border-color 0.2s; }
   .res-input::placeholder { color: var(--color-grey); }
   .res-input:focus { border-color: var(--color-purple); }
-  .res-btn { background: var(--color-purple); color: #fff; font-family: var(--font-sans); font-size: 14px; font-weight: 700; padding: 12px 16px; border-radius: 3px; border: none; cursor: pointer; white-space: nowrap; transition: opacity 0.2s; }
+  .res-btn { width: 100%; background: var(--color-purple); color: #fff; font-family: var(--font-sans); font-size: 14px; font-weight: 700; padding: 12px 16px; border-radius: 3px; border: none; cursor: pointer; white-space: nowrap; transition: opacity 0.2s; }
   .res-btn:hover { opacity: 0.85; }
   /* Blog section */
   .blog-section { background: var(--color-black); padding: 3.5rem 0 4rem; border-top: 1px solid var(--purple-22); }

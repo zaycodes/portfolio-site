@@ -1,9 +1,9 @@
 ---
-interface Company { name: string; logo: string | string[]; chip?: boolean; }
+interface Company { name: string; logo: string | string[]; chip?: boolean; logoLight?: string; }
 
 const companies: Company[] = [
   { name: 'Cisco · ThousandEyes', logo: ['/images/logos/cisco.svg', '/images/logos/thousandeyes.avif'] },
-  { name: 'Tealium',              logo: '/images/logos/tealium.svg' },
+  { name: 'Tealium',              logo: '/images/logos/tealium.svg', logoLight: '/images/logos/tealium-light.png' },
   { name: 'Google',               logo: '/images/logos/google.svg' },
   { name: 'Bard',                 logo: '/images/logos/bard.png' },
   { name: 'Camunda',              logo: '/images/logos/camunda.svg', chip: true },
@@ -38,12 +38,19 @@ const companies: Company[] = [
               {logos.length > 0 && (
                 <div class="co-logo-group">
                   {logos.map(src => (
-                    <img
-                      src={src}
-                      alt={c.name}
-                      class:list={['co-logo', { 'co-logo--chip': c.chip }]}
-                      loading="lazy"
-                    />
+                    c.logoLight && c.logo === src ? (
+                      <>
+                        <img src={src} alt={c.name} class="co-logo theme-logo-dark-only" loading="lazy" />
+                        <img src={c.logoLight} alt={c.name} class="co-logo theme-logo-light-only" loading="lazy" />
+                      </>
+                    ) : (
+                      <img
+                        src={src}
+                        alt={c.name}
+                        class:list={['co-logo', { 'co-logo--chip': c.chip }]}
+                        loading="lazy"
+                      />
+                    )
                   ))}
                 </div>
               )}

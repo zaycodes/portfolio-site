@@ -16,6 +16,11 @@ const logos = item.logoUrl
 // Tealium's asset is a pre-made white variant meant for dark backgrounds — a white chip
 // behind it would hide it, so it renders bare instead of on the usual neutral chip.
 const isBareLogo = (src: string) => src.includes('tealium.svg');
+// Bare logos that need a theme-swapped counterpart (the dark-mode asset
+// disappears against the light theme's near-white cards).
+const LOGO_LIGHT_VARIANT: Record<string, string> = {
+  '/images/logos/tealium.svg': '/images/logos/tealium-light.png',
+};
 ---
 
 <article
@@ -37,12 +42,19 @@ const isBareLogo = (src: string) => src.includes('tealium.svg');
           {logos.length > 0 && (
             <div class="card-cover-logo-group">
               {logos.map(src => (
-                <img
-                  src={src}
-                  alt={item.company}
-                  class:list={['card-cover-logo-badge', { 'card-cover-logo-badge--bare': isBareLogo(src) }]}
-                  loading="lazy"
-                />
+                LOGO_LIGHT_VARIANT[src] ? (
+                  <>
+                    <img src={src} alt={item.company} class="card-cover-logo-badge card-cover-logo-badge--bare theme-logo-dark-only" loading="lazy" />
+                    <img src={LOGO_LIGHT_VARIANT[src]} alt={item.company} class="card-cover-logo-badge card-cover-logo-badge--bare theme-logo-light-only" loading="lazy" />
+                  </>
+                ) : (
+                  <img
+                    src={src}
+                    alt={item.company}
+                    class:list={['card-cover-logo-badge', { 'card-cover-logo-badge--bare': isBareLogo(src) }]}
+                    loading="lazy"
+                  />
+                )
               ))}
             </div>
           )}
@@ -52,12 +64,19 @@ const isBareLogo = (src: string) => src.includes('tealium.svg');
           {logos.length > 0 ? (
             <div class="card-placeholder-logo-group">
               {logos.map(src => (
-                <img
-                  src={src}
-                  alt={item.company}
-                  class:list={['card-placeholder-logo', { 'card-placeholder-logo--bare': isBareLogo(src) }]}
-                  loading="lazy"
-                />
+                LOGO_LIGHT_VARIANT[src] ? (
+                  <>
+                    <img src={src} alt={item.company} class="card-placeholder-logo card-placeholder-logo--bare theme-logo-dark-only" loading="lazy" />
+                    <img src={LOGO_LIGHT_VARIANT[src]} alt={item.company} class="card-placeholder-logo card-placeholder-logo--bare theme-logo-light-only" loading="lazy" />
+                  </>
+                ) : (
+                  <img
+                    src={src}
+                    alt={item.company}
+                    class:list={['card-placeholder-logo', { 'card-placeholder-logo--bare': isBareLogo(src) }]}
+                    loading="lazy"
+                  />
+                )
               ))}
             </div>
           ) : (

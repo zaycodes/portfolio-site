@@ -145,6 +145,10 @@
   /* Responsive */
   @media (max-width: 1000px) { .hero-content { grid-template-columns: 1fr; } .hero-left { grid-column: 1; } .hero-bottom { grid-column: 1; } .hero-photo-wrap { display: none; } }
   @media (max-width: 700px) { .impact-grid { grid-template-columns: 1fr; } }
+  /* On narrow phones the headline phrases wrap to two lines — the reveal
+     animation's overflow:hidden clipping (sized for one line) would cut
+     the wrapped second line off, so drop the clip on small screens. */
+  @media (max-width: 480px) { .reveal-wrap { overflow: visible; } }
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes gridScroll { from { background-position: 0 0; } to { background-position: 48px 48px; } }

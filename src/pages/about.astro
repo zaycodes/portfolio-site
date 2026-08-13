@@ -18,6 +18,11 @@ const WIKIMEDIA_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8
 // Tealium's asset is a pre-made white variant meant for dark backgrounds — a white chip
 // behind it would hide it, so it renders bare instead of on the usual neutral chip.
 const isBareLogo = (src: string) => src.includes('tealium.svg');
+// Bare logos that need a theme-swapped counterpart (the dark-mode asset
+// disappears against the light theme's near-white background).
+const LOGO_LIGHT_VARIANT: Record<string, string> = {
+  '/images/logos/tealium.svg': '/images/logos/tealium-light.png',
+};
 
 const recIcons: Record<string, string> = {
   education: '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.66 2.69 3 6 3s6-1.34 6-3v-4.5"/>',
@@ -186,12 +191,19 @@ const storyPhases = [
                   </div>
                   <div class="story-proof-logos">
                     {phase.logos.map(l => (
-                      <img
-                        src={l.src}
-                        alt={l.name}
-                        class:list={['story-logo', { 'story-logo--bare': isBareLogo(l.src) }]}
-                        loading="lazy"
-                      />
+                      LOGO_LIGHT_VARIANT[l.src] ? (
+                        <>
+                          <img src={l.src} alt={l.name} class="story-logo story-logo--bare theme-logo-dark-only" loading="lazy" />
+                          <img src={LOGO_LIGHT_VARIANT[l.src]} alt={l.name} class="story-logo story-logo--bare theme-logo-light-only" loading="lazy" />
+                        </>
+                      ) : (
+                        <img
+                          src={l.src}
+                          alt={l.name}
+                          class:list={['story-logo', { 'story-logo--bare': isBareLogo(l.src) }]}
+                          loading="lazy"
+                        />
+                      )
                     ))}
                   </div>
                 </div>

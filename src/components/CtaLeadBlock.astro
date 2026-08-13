@@ -3,7 +3,7 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
 ---
 <section class="ctb" aria-label="Connect and resources">
 
-  <!-- Left: Book a call — dark panel -->
+  <!-- Left: Book a call — purple in dark theme, near-black in light theme (always contrasts against the page) -->
   <div class="ctb-left">
     <div class="ctb-inner">
       <h2 class="ctb-title">
@@ -22,27 +22,27 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
     </div>
   </div>
 
-  <!-- Right: Free resource — light panel -->
+  <!-- Right: Free resource — near-black in dark theme, pale lavender in light theme (always blends toward the page) -->
   <div class="ctb-right">
     <span class="ctb-tag">Free Resource</span>
     <div class="ctb-inner">
-      <h2 class="ctb-title ctb-title--dark">
-        The <em class="ctb-em--dark">AI Documentation Pipeline</em>
+      <h2 class="ctb-title">
+        The <em>AI Documentation Pipeline</em>
       </h2>
-      <p class="ctb-sub ctb-sub--dark">
+      <p class="ctb-sub">
         A practical guide to building documentation workflows with automated checks, linting, and AI-assisted review.
       </p>
       <form
         name="ai-doc-pipeline-footer"
         method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        action="/success"
+        action="/api/subscribe"
         class="ctb-form"
         aria-label="Download the AI Documentation Pipeline"
       >
-        <input type="hidden" name="form-name" value="ai-doc-pipeline-footer" />
+        <input type="hidden" name="resource" value="ai-doc-pipeline" />
         <input type="hidden" name="bot-field" />
+        <label for="ctb-name" class="sr-only">Your name</label>
+        <input id="ctb-name" type="text" name="name" placeholder="Your name" required autocomplete="name" class="ctb-input ctb-input--name" />
         <div class="ctb-form-row">
           <label for="ctb-email" class="sr-only">Your email address</label>
           <input id="ctb-email" type="email" name="email" placeholder="your@email.com" required autocomplete="email" class="ctb-input" />
@@ -61,12 +61,13 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
     overflow: hidden;
   }
 
-  /* ── Left panel — a deliberately dark, bold CTA band in both themes
-     (not the page's flipping background token) — the two-panel contrast
-     is the point, in dark mode as much as light. ── */
+  /* ── Left panel — the primary CTA (Book a Call). Always the panel that
+     contrasts hardest against the page's own background, so it reads as
+     prominent in both themes: purple against the dark theme's black page,
+     near-black against the light theme's pale page. ── */
   .ctb-left {
     flex: 0 0 calc(50% + 16px);
-    background: #0d0716;
+    background: var(--color-purple);
     clip-path: polygon(0 0, 100% 0, calc(100% - 32px) 100%, 0 100%);
     border-top: 1px solid var(--purple-22);
     padding: 4rem 3rem;
@@ -76,11 +77,14 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
     position: relative;
     z-index: 1;
   }
+  :global(html[data-theme="light"]) .ctb-left { background: #0d0716; }
 
-  /* ── Right panel — muted dusty lavender, toned down from the original bright pastel ── */
+  /* ── Right panel — the free resource. Always the panel that blends
+     toward the page's own background, so it reads as secondary next to
+     the left panel's contrast-forward CTA. ── */
   .ctb-right {
     flex: 1;
-    background: var(--surface-banner);
+    background: #0d0716;
     border-top: 1px solid rgba(132,12,214,0.2);
     padding: 4rem 2.5rem 4rem 3.5rem;
     display: flex;
@@ -88,6 +92,7 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
     align-items: flex-start;
     position: relative;
   }
+  :global(html[data-theme="light"]) .ctb-right { background: var(--surface-banner); }
 
   /* Fills the triangular clip gap between the two panels */
   .ctb-right::before {
@@ -97,11 +102,13 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
     left: -32px;
     width: 32px;
     height: 100%;
-    background: var(--surface-banner);
+    background: #0d0716;
     pointer-events: none;
   }
+  :global(html[data-theme="light"]) .ctb-right::before { background: var(--surface-banner); }
 
-  /* "Free Resource" badge — corner, out of flow */
+  /* "Free Resource" badge — corner, out of flow. Light text by default
+     (right panel is dark), dark ink once the right panel goes light. */
   .ctb-tag {
     position: absolute;
     top: 1.1rem;
@@ -113,9 +120,10 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--banner-ink-2);
+    color: rgba(255,255,255,0.9);
     padding: 4px 12px;
   }
+  :global(html[data-theme="light"]) .ctb-tag { color: var(--banner-ink-2); }
 
   /* Shared inner content — top-aligned, matching width */
   .ctb-inner {
@@ -134,18 +142,16 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
     color: var(--color-white);
   }
   .ctb-title em { color: var(--color-purple); font-style: normal; }
-  .ctb-title--dark { color: var(--banner-ink); }
-  .ctb-em--dark { color: var(--banner-ink-2); }
-  /* The left panel stays dark always, so its heading stays light always too. */
-  .ctb-left .ctb-title { color: #FAFAFA; }
 
-  /* The global ::selection color follows the theme's ink token, which turns
-     near-black in light mode — invisible against this panel's permanently
-     dark background. Force a light selection here regardless of theme. */
-  .ctb-left ::selection {
-    background: rgba(255, 255, 255, 0.25);
-    color: #FAFAFA;
-  }
+  /* The left panel is always dark (purple or near-black, depending on
+     theme), so its text stays forced light regardless of theme — the
+     base tokens would otherwise flip to dark ink in the light theme. */
+  .ctb-left .ctb-title { color: #FAFAFA; }
+  /* The default purple em would be invisible against the left panel's own
+     purple background in the dark theme, so it gets a lighter accent. */
+  .ctb-left .ctb-title em { color: #bf7fff; }
+  .ctb-left .ctb-sub { color: rgba(250,250,250,0.65); }
+  .ctb-left ::selection { background: rgba(255, 255, 255, 0.25); color: #FAFAFA; }
 
   /* ── Sub text ── */
   .ctb-sub {
@@ -154,8 +160,6 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
     line-height: 1.75;
     margin-bottom: 2rem;
   }
-  .ctb-sub--dark { color: rgba(26,14,46,0.75); }
-  .ctb-left .ctb-sub { color: rgba(250,250,250,0.65); }
 
   /* ── Left buttons ── */
   .ctb-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
@@ -179,6 +183,7 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
   /* ── Right form ── */
   .ctb-form { display: flex; flex-direction: column; align-items: center; }
   .ctb-form-row { display: flex; gap: 8px; width: 100%; max-width: 360px; }
+  .ctb-input--name { width: 100%; max-width: 360px; margin-bottom: 8px; }
 
   .ctb-input {
     flex: 1;

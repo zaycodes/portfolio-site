@@ -321,6 +321,15 @@ input, textarea {
   50%       { box-shadow: 0 0 22px 6px rgba(132,12,214,0.38); }
 }
 
+/* ── Theme-swapped logo assets ───────────────────
+   Pair a dark-theme image (.theme-logo-dark-only) with a light-theme
+   counterpart (.theme-logo-light-only) — only one renders per theme. For
+   brand marks shipped as a single dark- or light-only asset that
+   disappears against the other theme's background. */
+.theme-logo-light-only { display: none !important; }
+:root[data-theme="light"] .theme-logo-dark-only { display: none !important; }
+:root[data-theme="light"] .theme-logo-light-only { display: inline-block !important; }
+
 /* ── Scrollbar ─────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--color-black); }

@@ -21,9 +21,8 @@ const footerLinks = [
   <div class="footer-inner">
     <div class="footer-top">
       <a href="/" class="footer-logo" aria-label="Zaycodes — home">
-        <span class="footer-logo-chip">
-          <img src="/images/zaycodes-wordmark.png" alt="zaycodes" class="footer-wordmark" />
-        </span>
+        <img src="/images/zaycodes-wordmark.png" alt="zaycodes" class="footer-wordmark theme-logo-dark-only" />
+        <img src="/images/zaycodes-wordmark-light.png" alt="zaycodes" class="footer-wordmark theme-logo-light-only" />
       </a>
       <nav aria-label="Footer navigation">
         <ul class="footer-nav" role="list">
@@ -50,10 +49,6 @@ const footerLinks = [
   .footer-inner { max-width: 1140px; margin: 0 auto; }
   .footer-top { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--purple-22); }
   .footer-logo { display: flex; align-items: center; text-decoration: none; }
-  .footer-logo-chip { display: inline-flex; align-items: center; border-radius: 6px; transition: background var(--transition-base); }
-  /* Same fix as the nav wordmark: the PNG is light text made for a dark
-     backdrop, so it needs a dark chip once the footer itself goes light. */
-  :global(html[data-theme="light"]) .footer-logo-chip { background: #0d0716; padding: 4px 8px; }
   .footer-wordmark { height: 22px; width: auto; display: block; }
   .logo-mark { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--color-purple); display: flex; align-items: center; justify-content: center; }
   .footer-logo span { color: var(--white-55); font-size: 16px; font-weight: 600; }
