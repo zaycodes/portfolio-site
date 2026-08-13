@@ -1,5 +1,5 @@
 [build]
-  command = "git clone https://x-access-token:$RESOURCES_REPO_TOKEN@github.com/zaycodes/portfolio-resources.git resources-src && cd resources-src && npm install && node build-pdfs.mjs ../public/downloads && cd .. && npm run build"
+  command = "rm -rf resources-src && git clone https://x-access-token:$RESOURCES_REPO_TOKEN@github.com/zaycodes/portfolio-resources.git resources-src && cd resources-src && npm install && node build-pdfs.mjs ../public/downloads && cd .. && npm run build"
   publish = "dist"
   functions = "netlify/functions"
 
