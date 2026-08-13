@@ -249,6 +249,10 @@ import { stats } from '../data/work';
     }
     .impact-head { margin-bottom: 3rem; }
     .impact-grid { grid-template-columns: repeat(2, 1fr); gap: 3rem 2rem; }
+    /* The 48px floor below was sized for a single-row layout — in this
+       2-column mobile grid it's wide enough to clip values like "88%"
+       and "600" past the edge of the column. */
+    .impact-num { font-size: clamp(30px, 10vw, 42px); }
     .deco-ring-lg { width: 220px; height: 220px; top: -60px; right: -60px; }
     .deco-ring-sm { width: 120px; height: 120px; }
     .deco-diamond { display: none; }

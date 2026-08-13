@@ -24,12 +24,13 @@ const fullTitle = title.includes('Zainab') ? title : `${title} — Zainab Daodu`
 <html lang="en">
   <head>
     <!-- Resolve theme before first paint: stored choice wins, otherwise
-         follow the OS/browser preference. Must be a blocking inline script
-         (not type="module", which defers) so there's no flash of the wrong theme. -->
+         default to light regardless of OS/browser preference. Must be a
+         blocking inline script (not type="module", which defers) so
+         there's no flash of the wrong theme. -->
     <script is:inline>
       (function () {
         var stored = localStorage.getItem('theme');
-        var theme = stored || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        var theme = stored || 'light';
         document.documentElement.dataset.theme = theme;
       })();
     </script>
