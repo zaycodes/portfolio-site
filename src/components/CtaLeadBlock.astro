@@ -3,7 +3,7 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
 ---
 <section class="ctb" aria-label="Connect and resources">
 
-  <!-- Left: Book a call — purple in dark theme, near-black in light theme (always contrasts against the page) -->
+  <!-- Left: Book a call — soft pale-purple panel in dark theme (swapped with the right panel's light-mode shade, so the vivid-purple button pops against it instead of blending in), near-black in light theme -->
   <div class="ctb-left">
     <div class="ctb-inner">
       <h2 class="ctb-title">
@@ -65,13 +65,14 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
     overflow: hidden;
   }
 
-  /* ── Left panel — the primary CTA (Book a Call). Always the panel that
-     contrasts hardest against the page's own background, so it reads as
-     prominent in both themes: purple against the dark theme's black page,
-     near-black against the light theme's pale page. ── */
+  /* ── Left panel — the primary CTA (Book a Call). In dark theme it's the
+     same soft pale-purple shade as the right panel's light-theme background
+     (swapped roles), so the vivid-purple button sitting on top of it actually
+     stands out instead of matching its own panel. In light theme it's back
+     to near-black, contrasting against the page's pale background. ── */
   .ctb-left {
     flex: 0 0 calc(50% + 16px);
-    background: var(--color-purple);
+    background: #E6D2F7;
     clip-path: polygon(0 0, 100% 0, calc(100% - 32px) 100%, 0 100%);
     border-top: 1px solid var(--purple-22);
     padding: 4rem 3rem;
@@ -147,15 +148,19 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
   }
   .ctb-title em { color: var(--color-purple); font-style: normal; }
 
-  /* The left panel is always dark (purple or near-black, depending on
-     theme), so its text stays forced light regardless of theme — the
-     base tokens would otherwise flip to dark ink in the light theme. */
-  .ctb-left .ctb-title { color: #FAFAFA; }
-  /* The default purple em would be invisible against the left panel's own
-     purple background in the dark theme, so it gets a lighter accent. */
-  .ctb-left .ctb-title em { color: #bf7fff; }
-  .ctb-left .ctb-sub { color: rgba(250,250,250,0.65); }
-  .ctb-left ::selection { background: rgba(255, 255, 255, 0.25); color: #FAFAFA; }
+  /* Dark theme: the left panel is now pale lavender, so its text is forced
+     to dark ink — the base tokens would otherwise flip to light ink here. */
+  .ctb-left .ctb-title { color: var(--banner-ink); }
+  .ctb-left .ctb-title em { color: var(--color-purple); }
+  .ctb-left .ctb-sub { color: rgba(26,14,46,0.65); }
+  .ctb-left ::selection { background: rgba(132,12,214,0.2); color: var(--banner-ink); }
+
+  /* Light theme: the left panel goes back to near-black, so its text goes
+     back to forced light ink. */
+  :global(html[data-theme="light"]) .ctb-left .ctb-title { color: #FAFAFA; }
+  :global(html[data-theme="light"]) .ctb-left .ctb-title em { color: #bf7fff; }
+  :global(html[data-theme="light"]) .ctb-left .ctb-sub { color: rgba(250,250,250,0.65); }
+  :global(html[data-theme="light"]) .ctb-left ::selection { background: rgba(255, 255, 255, 0.25); color: #FAFAFA; }
 
   /* ── Sub text ── */
   .ctb-sub {
@@ -176,13 +181,15 @@ const BOOK_A_CALL_URL = 'https://cal.com/zainab-daodu/work-with-me';
     font-weight: 700;
     padding: 14px 24px;
     border-radius: var(--radius-sm);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.75);
+    border: 1px solid rgba(26,14,46,0.2);
+    color: rgba(26,14,46,0.75);
     text-decoration: none;
     white-space: nowrap;
     transition: border-color 0.2s, color 0.2s;
   }
-  .ctb-ghost:hover { border-color: rgba(255,255,255,0.55); color: #fff; }
+  .ctb-ghost:hover { border-color: rgba(26,14,46,0.55); color: var(--banner-ink); }
+  :global(html[data-theme="light"]) .ctb-ghost { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.75); }
+  :global(html[data-theme="light"]) .ctb-ghost:hover { border-color: rgba(255,255,255,0.55); color: #fff; }
 
   /* ── Right form ── */
   .ctb-form { display: flex; flex-direction: column; align-items: center; }

@@ -260,8 +260,9 @@ const currentPath = Astro.url.pathname;
     text-decoration: none;
   }
 
-  /* Responsive */
-  @media (max-width: 720px) {
+  /* Responsive — 900px covers iPad portrait widths (768-834px), where the
+     full desktop nav (5 links + toggle + CTA) has no room to breathe. */
+  @media (max-width: 900px) {
     .nav-links { display: none; }
     .nav-right { display: none; }
     .nav-mobile-controls { display: flex; }
